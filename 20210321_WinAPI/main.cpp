@@ -44,6 +44,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPreInstance, LPSTR lpszCmdP
 struct Circle
 {
 	int radius;
+	POINTFLOAT originPoint;
 	POINTFLOAT point;
 	RECT rc;
 
@@ -58,6 +59,9 @@ struct Circle
 		point.y = y;
 		radius = r;
 		SetRect();
+
+		originPoint.x = x;
+		originPoint.y = y;
 	}
 
 	void ThrowCircle(float speed, float angle)
@@ -87,6 +91,17 @@ struct Circle
 		SetRect();
 	}
 
+	void Move(int tick)
+	{
+		//y = a * pow(x - h, 2) + k;
+		POINTFLOAT deltaPoint = { tick, 5 * pow(tick * 0.1f - 1, 2) - 5 };
+
+		point.x = originPoint.x + deltaPoint.x * 10;
+		point.y = originPoint.y + deltaPoint.y * 10;
+
+		SetRect();
+	}
+
 	void Render(HDC hdc)
 	{
 		Ellipse(hdc, rc.left, rc.top, rc.right, rc.bottom);
@@ -98,6 +113,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
 	HDC hdc;
 	PAINTSTRUCT ps;
+	static int tick = 0;
 	switch (iMessage)
 	{
 	case WM_CREATE:
@@ -107,7 +123,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		switch (wParam)
 		{
 		case VK_SPACE:
-			circle.Move();
+			circle.Move(++tick);
 			InvalidateRect(g_hWnd, NULL, NULL);
 			break;
 		}
