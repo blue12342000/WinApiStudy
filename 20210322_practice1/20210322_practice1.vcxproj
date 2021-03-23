@@ -117,6 +117,13 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AIUnit.h" />
+    <ClInclude Include="DyingMotion.h" />
+    <ClInclude Include="Obstacle.h" />
+    <ClInclude Include="UIBattleStatus.h" />
+    <ClInclude Include="Unit.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
