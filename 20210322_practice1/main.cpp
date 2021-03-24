@@ -145,7 +145,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		EndPaint(g_hWnd, &ps);
 		break;
 	case WM_TIMER:
-		
 		unitA.Update();
 		unitB.Update();
 
@@ -195,6 +194,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		break;
 	case WM_DESTROY:
 		KillTimer(hWnd, (UINT_PTR)hTimer);
+		unitA.Release();
+		unitB.Release();
+		battleStatus.Release();
+		for (auto& o : obstacle) o.Release();
 		PostQuitMessage(0);
 		break;
 	}

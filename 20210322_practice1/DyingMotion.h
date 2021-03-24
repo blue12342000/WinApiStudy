@@ -43,6 +43,9 @@ struct DyingMotion
 	{
 		if (isPlay == true)
 		{
+			HBRUSH hBrush, hOldBrush;
+			hBrush = CreateSolidBrush(RGB(250, 250, 210));
+			hOldBrush = (HBRUSH)SelectObject(hdc, hBrush);
 			for (int i = 0; i < 360; i += 360 / pice)
 			{
 				float radian = 3.14f * i / 180;
@@ -51,11 +54,10 @@ struct DyingMotion
 				point.x += cos(radian) * speed * tick;
 				point.y += sin(radian) * speed * tick;
 
-				HBRUSH hBrush, hOldBrush;
-				hBrush = CreateSolidBrush(RGB(250, 250, 210));
-				hOldBrush = (HBRUSH)SelectObject(hdc, hBrush);
 				DyingMotionToCenter(hdc, point.x, point.y, 20);
 			}
+			SelectObject(hdc, hOldBrush);
+			DeleteObject(hBrush);
 		}
 	}
 };

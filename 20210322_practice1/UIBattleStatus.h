@@ -53,12 +53,8 @@ public:
 	{
 		RenderRect(hdc, bgRect, hbBackground, hpBackground);
 
-		HBRUSH hBrush = (HBRUSH)GetStockObject(NULL_BRUSH), hOldBrush;
-		hOldBrush = (HBRUSH)SelectObject(hdc, hBrush);
 		TextOut(hdc, unitAPoint.x - 30, unitAPoint.y + 15, "PLAYER", 6);
 		TextOut(hdc, unitBPoint.x - 25, unitBPoint.y + 15, "ENEMY", 5);
-		SelectObject(hdc, hOldBrush);
-		DeleteObject(hBrush);
 
 		maxHpRect = RectCenter({ unitAPoint.x, unitAPoint.y + 60 }, hpBarWidth, hpBarHeight);
 		RenderRect(hdc, maxHpRect, hbMaxHp, hpMaxHp);
@@ -69,5 +65,14 @@ public:
 		RenderRect(hdc, remainHpRect, hbRemainHp, hpRemainHp);
 		remainHpRect = RectCenter({ unitBPoint.x, unitBPoint.y + 60 }, (float)hpBarWidth * unitB->GetHp() / unitB->GetMaxHp(), hpBarHeight);
 		RenderRect(hdc, remainHpRect, hbRemainHp, hpRemainHp);
+	}
+
+	void Release()
+	{
+		if (hbMaxHp != NULL) DeleteObject(hbMaxHp);
+		if (hpMaxHp != NULL) DeleteObject(hpMaxHp);
+
+		if (hbRemainHp != NULL) DeleteObject(hbRemainHp);
+		if (hpRemainHp != NULL) DeleteObject(hpRemainHp);
 	}
 };

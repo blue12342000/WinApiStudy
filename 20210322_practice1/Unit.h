@@ -127,6 +127,12 @@ struct UnitBullet
 
 		return false;
 	}
+
+	void Release()
+	{
+		if (hBrush != NULL) DeleteObject(hBrush);
+		if (hPen != NULL) DeleteObject(hPen);
+	}
 };
 
 class Unit
@@ -296,5 +302,12 @@ public:
 				bullet.Render(hdc);
 			}
 		}
+	}
+
+	void Release()
+	{
+		if (hBrush != NULL) DeleteObject(hBrush);
+		if (hPen != NULL) DeleteObject(hPen);
+		bullet.Release();
 	}
 };

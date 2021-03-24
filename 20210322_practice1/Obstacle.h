@@ -59,4 +59,10 @@ struct Obstacle
 			RenderRect(hdc, rc, hBrush, hPen);
 		}
 	}
+
+	void Release()
+	{
+		if (hBrush != NULL) DeleteObject(hBrush);
+		if (hPen != NULL) DeleteObject(hPen);
+	}
 };
