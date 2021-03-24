@@ -1,5 +1,5 @@
 #pragma once
-#include <Windows.h>
+#include "Config.h"
 
 extern HWND g_hWnd;
 

@@ -5,8 +5,18 @@
 
 class MainGame : public GameNode
 {
+private:
+	HDC hdc;
+	PAINTSTRUCT ps;
+	HANDLE timer;
+
 	Tank tank;
 public:
+
+	void Init();
+	void Update();
+	void Render(HDC hdc);
+	void Release();
 
 	LRESULT CALLBACK MainWndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam);
 };
