@@ -1,16 +1,20 @@
 #include "Tank.h"
 
-void Tank::Init()
+HRESULT Tank::Init()
 {
 	pos.x = 100;
 	pos.y = 200;
 
-	angle = 0;
+	angle = -45;
 
 	size = 100;
 	curr = 0;
 
 	SetRect();
+	bulletPtr = new ShotgunBullet();
+	bulletPtr->Init();
+
+	return S_OK;
 }
 
 void Tank::Update()
@@ -20,11 +24,11 @@ void Tank::Update()
 		if (bullet[i].Distance(pos) > 800)
 		{
 			bullet[i].Init();
-			continue;
 		}
 
 		bullet[i].Update();
 	}
+	bulletPtr->Update();
 }
 
 void Tank::Render(HDC hdc)
@@ -38,13 +42,17 @@ void Tank::Render(HDC hdc)
 	{
 		bullet[i].Render(hdc);
 	}
+
+	bulletPtr->Render(hdc);
 }
 
 void Tank::Release()
 {
+	bulletPtr->Release();
+	delete bulletPtr;
 }
 
-void Tank::Move(POINT delta)
+void Tank::Move(POINTFLOAT delta)
 {
 	pos.x += delta.x;
 	pos.y += delta.y;
@@ -56,8 +64,16 @@ void Tank::Fire()
 	curr = (curr + 1) % 10;
 
 	float radian = PI * angle / 180;
-	bullet[curr] = Bullet({ (int)(pos.x + cos(radian) * 30), (int)(pos.y + sin(radian) * 30) }, 10, radian, 5);
-	bullet[curr].Fire();
+	bullet[curr].Fire({ (pos.x + cos(radian) * 30), (pos.y + sin(radian) * 30) }, 10, radian, 5);
+}
+
+void Tank::FireSpecial()
+{
+	if (!bulletPtr->IsShoot())
+	{
+		float radian = PI * angle / 180;
+		bulletPtr->Fire({ (pos.x + cos(radian) * 30), (pos.y + sin(radian) * 30) }, 10, radian, 5);
+	}
 }
 
 void Tank::Dead()
@@ -68,6 +84,7 @@ void Tank::Dead()
 void Tank::RotateFire(float angle)
 {
 	this->angle += angle;
+	this->angle = (this->angle + 360) % 360;
 }
 
 void Tank::SetRect()

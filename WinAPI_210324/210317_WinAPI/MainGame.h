@@ -10,10 +10,12 @@ private:
 	PAINTSTRUCT ps;
 	HANDLE timer;
 
+	bool IsInited = false;
+
 	Tank tank;
 public:
 
-	void Init();
+	HRESULT Init();
 	void Update();
 	void Render(HDC hdc);
 	void Release();

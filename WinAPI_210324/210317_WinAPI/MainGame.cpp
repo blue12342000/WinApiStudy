@@ -1,9 +1,11 @@
 #include "MainGame.h"
 
-void MainGame::Init()
+HRESULT MainGame::Init()
 {
 	timer = (HANDLE)SetTimer(g_hWnd, 0, 10, NULL);
 	tank.Init();
+	IsInited = true;
+	return S_OK;
 }
 
 void MainGame::Update()
@@ -29,7 +31,6 @@ LRESULT MainGame::MainWndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lP
 	switch (iMessage)
 	{
 	case WM_CREATE:
-		tank.Init();
 		break;
 	case WM_KEYDOWN:
 		switch (wParam)
@@ -50,27 +51,29 @@ LRESULT MainGame::MainWndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lP
 		case 'D':
 			tank.Move({ 5, 0 });
 			break;
+		case 'f':
+		case 'F':
+			tank.FireSpecial();
+			break;
 		case VK_SPACE:
 			tank.Fire();
+			break;
+		case VK_LEFT:
+			tank.RotateFire(-5);
+			break;
+		case VK_RIGHT:
+			tank.RotateFire(+5);
 			break;
 		}
 		InvalidateRect(hWnd, NULL, true);
 		break;
-	case WM_LBUTTONDOWN:
-		tank.RotateFire(-10);
-		InvalidateRect(hWnd, NULL, true);
-		break;
-	case WM_RBUTTONDOWN:
-		tank.RotateFire(+10);
-		InvalidateRect(hWnd, NULL, true);
-		break;
 	case WM_PAINT:
 		hdc = BeginPaint(g_hWnd, &ps);
-		Render(hdc);
+		if (IsInited) Render(hdc);
 		EndPaint(g_hWnd, &ps);
 		break;
 	case WM_TIMER:
-		Update();
+		if (IsInited) Update();
 		InvalidateRect(hWnd, NULL, true);
 		break;
 	case WM_DESTROY:

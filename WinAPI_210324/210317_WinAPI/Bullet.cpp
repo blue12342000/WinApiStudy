@@ -6,24 +6,27 @@ Bullet::Bullet()
 {
 }
 
-Bullet::Bullet(POINT pos, int size, float radian, float speed):pos(pos), size(size), radian(radian), speed(speed)
-{
-	isShoot = false;
-	SetRect();
-}
-
 Bullet::~Bullet()
 {
 }
 
-void Bullet::Init()
+HRESULT Bullet::Init()
 {
 	isShoot = false;
+
+	return S_OK;
 }
 
 void Bullet::Update()
 {
 	if (!isShoot) return;
+
+	if (Distance(pos) > 400)
+	{
+		isShoot = false;
+		return;
+	}
+
 	pos.x += cos(radian) * speed;
 	pos.y += sin(radian) * speed;
 	SetRect();
@@ -31,22 +34,27 @@ void Bullet::Update()
 
 void Bullet::Render(HDC hdc)
 {
-	if (isShoot)
-		Ellipse(hdc, rc.left, rc.top, rc.right, rc.bottom);
+	if (isShoot) Ellipse(hdc, rc.left, rc.top, rc.right, rc.bottom);
 }
 
 void Bullet::Release()
 {
 }
 
-void Bullet::Fire()
+void Bullet::Fire(POINTFLOAT pos, int size, float radian, float speed)
 {
 	isShoot = true;
+	this->pos = pos;
+	this->origin = pos;
+	this->size = size;
+	this->radian = radian;
+	this->speed = speed;
+	SetRect();
 }
 
-float Bullet::Distance(POINT target)
+float Bullet::Distance(POINTFLOAT target)
 {
-	return sqrt(pow(target.x - pos.x, 2) + pow(target.y - pos.y, 2));
+	return sqrt(pow(target.x - origin.x, 2) + pow(target.y - origin.y, 2));
 }
 
 void Bullet::SetRect()

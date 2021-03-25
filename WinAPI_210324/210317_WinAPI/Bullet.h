@@ -3,9 +3,10 @@
 
 class Bullet : public GameNode
 {
-private:
+protected:
 	bool isShoot = false;
-	POINT pos;
+	POINTFLOAT pos;
+	POINTFLOAT origin;
 	int size;
 	float radian;
 	float speed;
@@ -13,17 +14,18 @@ private:
 
 public:
 	Bullet();
-	Bullet(POINT pos, int size, float radian, float speed);
 	~Bullet();
 
-	void Init();
+	HRESULT Init();
 	void Update();
 	void Render(HDC hdc);
 	void Release();
 
-	void Fire();
+	virtual void Fire(POINTFLOAT pos, int size, float radian, float speed);
 
-	float Distance(POINT target);
+	float Distance(POINTFLOAT target);
 	void SetRect();
+
+	inline bool IsShoot() { return isShoot; }
 };
 

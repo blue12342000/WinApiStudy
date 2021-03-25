@@ -37,7 +37,11 @@ int APIENTRY WinMain(HINSTANCE _hInstance, HINSTANCE _hPrevInstance, LPSTR _lpsz
 	// 윈도우 출력
 	ShowWindow(g_hWnd, nCmdShow);
 
-	g_mainGame.Init();
+	if (FAILED(g_mainGame.Init()))
+	{
+		MessageBox(g_hWnd, "게임 메인 초기화 실패!!", "경고", 0);
+	}
+
 	// 메시지 큐에 있는 메시지 처리
 	MSG message;
 	while (GetMessage(&message, 0, 0, 0))

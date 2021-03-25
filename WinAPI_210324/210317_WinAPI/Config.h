@@ -13,4 +13,4 @@
 
 using namespace std;
 
-extern HWND g_hWND; //파일 어디서든 쓸 수 있는 변수
+extern HWND g_hWnd; //파일 어디서든 쓸 수 있는 변수

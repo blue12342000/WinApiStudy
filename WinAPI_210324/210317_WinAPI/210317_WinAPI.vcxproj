@@ -142,6 +142,7 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGame.cpp" />
+    <ClCompile Include="ShotgunBullet.cpp" />
     <ClCompile Include="Tank.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -150,6 +151,7 @@
     <ClInclude Include="GameNode.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="MainGame.h" />
+    <ClInclude Include="ShotgunBullet.h" />
     <ClInclude Include="Tank.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
