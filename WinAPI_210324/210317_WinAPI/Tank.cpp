@@ -11,8 +11,15 @@ HRESULT Tank::Init()
 	curr = 0;
 
 	SetRect();
-	bulletPtr = new ShotgunBullet();
-	bulletPtr->Init();
+	bulletNum = 10;
+	bullets = new Bullet[bulletNum];
+	for (int i = 0; i < bulletNum; ++i)
+	{
+		bullets[i].Init();
+	}
+
+	skillBulletPtr = new ShotgunBullet();
+	skillBulletPtr->Init();
 
 	return S_OK;
 }
@@ -21,14 +28,14 @@ void Tank::Update()
 {
 	for (int i = 0; i < 10; ++i)
 	{
-		if (bullet[i].Distance(pos) > 800)
+		if (bullets[i].Distance(pos) > 800)
 		{
-			bullet[i].Init();
+			bullets[i].Init();
 		}
 
-		bullet[i].Update();
+		bullets[i].Update();
 	}
-	bulletPtr->Update();
+	skillBulletPtr->Update();
 }
 
 void Tank::Render(HDC hdc)
@@ -40,16 +47,21 @@ void Tank::Render(HDC hdc)
 
 	for (int i = 0; i < 10; ++i)
 	{
-		bullet[i].Render(hdc);
+		bullets[i].Render(hdc);
 	}
 
-	bulletPtr->Render(hdc);
+	skillBulletPtr->Render(hdc);
 }
 
 void Tank::Release()
 {
-	bulletPtr->Release();
-	delete bulletPtr;
+	for (int i = 0; i < bulletNum; ++i)
+	{
+		bullets[i].Release();
+	}
+	delete[] bullets;
+	skillBulletPtr->Release();
+	delete skillBulletPtr;
 }
 
 void Tank::Move(POINTFLOAT delta)
@@ -64,15 +76,15 @@ void Tank::Fire()
 	curr = (curr + 1) % 10;
 
 	float radian = PI * angle / 180;
-	bullet[curr].Fire({ (pos.x + cos(radian) * 30), (pos.y + sin(radian) * 30) }, 10, radian, 5);
+	bullets[curr].Fire({ (pos.x + cos(radian) * 30), (pos.y + sin(radian) * 30) }, 10, radian, 5);
 }
 
 void Tank::FireSpecial()
 {
-	if (!bulletPtr->IsShoot())
+	if (!skillBulletPtr->GetIsShoot())
 	{
 		float radian = PI * angle / 180;
-		bulletPtr->Fire({ (pos.x + cos(radian) * 30), (pos.y + sin(radian) * 30) }, 10, radian, 5);
+		skillBulletPtr->Fire({ (pos.x + cos(radian) * 30), (pos.y + sin(radian) * 30) }, 10, radian, 5);
 	}
 }
 

@@ -26,6 +26,12 @@ public:
 	float Distance(POINTFLOAT target);
 	void SetRect();
 
-	inline bool IsShoot() { return isShoot; }
+	virtual bool IsRectCollision(RECT other);
+	virtual bool IsCircleCollision(POINTFLOAT otherPos, int otherRadius);
+	virtual bool IsCollision(POINTFLOAT otherPos, int otherRadius);
+
+	inline void SetIsShoot(bool isShoot) { this->isShoot = isShoot; }
+	inline bool GetIsShoot() { return isShoot; }
+	inline RECT GetRect() { return rc; }
 };
 

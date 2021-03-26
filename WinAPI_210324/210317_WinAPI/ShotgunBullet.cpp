@@ -30,16 +30,17 @@ void ShotgunBullet::Update()
 		isSpread = true;
 		for (int i = 0; i < count; ++i)
 		{
-			bullets[i].Fire(pos, 10, radian + PI * i * 30 / 180, 5);
+			bullets[i].Fire(pos, 10, radian + PI * 2.0f / count * i, 5);
 		}
 	}
 
 	if (isSpread)
 	{
+		isShoot = false;
 		for (int i = 0; i < count; ++i)
 		{
 			bullets[i].Update();
-			isShoot = bullets[i].IsShoot();
+			isShoot |= bullets[i].GetIsShoot();
 		}
 	}
 }
@@ -65,4 +66,39 @@ void ShotgunBullet::Fire(POINTFLOAT pos, int size, float radian, float speed)
 {
 	Bullet::Fire(pos, size, radian, speed);
 	isSpread = false;
+}
+
+bool ShotgunBullet::IsRectCollision(RECT other)
+{
+	if (!isSpread)
+	{
+		if (Bullet::IsRectCollision(other))
+		{
+			isShoot = false;
+			return true;
+		}
+	}
+	else
+	{
+		for (int i = 0; i < count; ++i)
+		{
+			if (bullets[i].GetIsShoot() && bullets[i].IsRectCollision(other))
+			{
+				bullets[i].SetIsShoot(false);
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+bool ShotgunBullet::IsCircleCollision(POINTFLOAT otherPos, int otherRadius)
+{
+	return false;
+}
+
+bool ShotgunBullet::IsCollision(POINTFLOAT otherPos, int otherRadius)
+{
+	return false;
 }

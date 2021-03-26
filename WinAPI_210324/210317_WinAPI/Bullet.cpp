@@ -64,3 +64,26 @@ void Bullet::SetRect()
 	rc.top = pos.y - size / 2;
 	rc.bottom = pos.y + size / 2;
 }
+
+bool Bullet::IsRectCollision(RECT other)
+{
+	if (rc.right < other.left || rc.left > other.right
+		|| rc.bottom < other.top || rc.top > other.bottom
+		|| other.right < rc.left || other.left > rc.right
+		|| other.bottom < rc.top || other.top > rc.bottom)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+bool Bullet::IsCircleCollision(POINTFLOAT otherPos, int otherRadius)
+{
+	return false;
+}
+
+bool Bullet::IsCollision(POINTFLOAT otherPos, int otherRadius)
+{
+	return false;
+}

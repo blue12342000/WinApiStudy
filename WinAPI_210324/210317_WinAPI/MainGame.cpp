@@ -4,6 +4,14 @@ HRESULT MainGame::Init()
 {
 	timer = (HANDLE)SetTimer(g_hWnd, 0, 10, NULL);
 	tank.Init();
+	enemyNum = 10;
+	enemy = new Enemy[enemyNum];
+	for (int i = 0; i < enemyNum; ++i)
+	{
+		enemy[i] = Enemy(10, rand() % 2 + 0.3f);
+		enemy[i].SetTank(&tank);
+		enemy[i].SetPos({(float)(rand() % WINSIZE_X), (float)(rand() % 100) });
+	}
 	IsInited = true;
 	return S_OK;
 }
@@ -11,17 +19,70 @@ HRESULT MainGame::Init()
 void MainGame::Update()
 {
 	tank.Update();
+	int bulletNum = tank.GetBulletNum();
+	Bullet* bullets = tank.GetBullets();
+	Bullet* skillBullet = tank.GetSkillBulletPtr();
+
+	for (int i = 0; i < enemyNum; ++i)
+	{
+		enemy[i].Update();
+		for (int l = 0; l < bulletNum; ++l)
+		{
+			if (bullets[l].GetIsShoot() && enemy[i].GetState() == Enemy::EnemyState::ALIVE
+				&& IsRectCollision(enemy[i].GetRect(), bullets[l].GetRect()))
+			{
+				enemy[i].SetState(Enemy::EnemyState::DEAD);
+				bullets[l].SetIsShoot(false);
+				break;
+			}
+		}
+		if (skillBullet->GetIsShoot() && enemy[i].GetState() == Enemy::EnemyState::ALIVE
+			&& skillBullet->IsRectCollision(enemy[i].GetRect()))
+		{
+			enemy[i].SetState(Enemy::EnemyState::DEAD);
+		}
+	}
+	
 }
 
 void MainGame::Render(HDC hdc)
 {
 	tank.Render(hdc);
+	for (int i = 0; i < enemyNum; ++i)
+	{
+		enemy[i].Render(hdc);
+	}
 }
 
 void MainGame::Release()
 {
 	tank.Release();
+	enemy->Release();
+	delete[] enemy;
 	KillTimer(g_hWnd, 0);
+}
+
+bool MainGame::IsRectCollision(RECT target, RECT other)
+{
+	if (target.right < other.left || target.left > other.right
+		|| target.bottom < other.top || target.top > other.bottom
+		|| other.right < target.left || other.left > target.right
+		|| other.bottom < target.top || other.top > target.bottom)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+bool MainGame::IsCircleCollision(POINTFLOAT targetPos, int targetRadius, POINTFLOAT otherPos, int otherRadius)
+{
+	return false;
+}
+
+bool MainGame::IsCollision(RECT target, POINTFLOAT otherPos, int otherRadius)
+{
+	return false;
 }
 
 LRESULT MainGame::MainWndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)

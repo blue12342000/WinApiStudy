@@ -15,8 +15,9 @@ private:
 	int angle;
 
 	int curr;
-	Bullet bullet[10];
-	Bullet* bulletPtr = nullptr;
+	int bulletNum;
+	Bullet* bullets;
+	Bullet* skillBulletPtr = nullptr;
 
 public:
 	HRESULT Init();
@@ -31,5 +32,10 @@ public:
 
 	void RotateFire(float angle);
 	void SetRect();
+
+	inline POINTFLOAT GetPoint() { return pos; }
+	inline int GetBulletNum() { return bulletNum; }
+	inline Bullet* GetBullets() { return bullets; }
+	inline Bullet* GetSkillBulletPtr() { return skillBulletPtr; }
 };
 
