@@ -13,7 +13,6 @@ HRESULT ShotgunBullet::Init()
 	Bullet::Init();
 	count = 36;
 	bullets = new Bullet[count];
-
 	return S_OK;
 }
 
@@ -98,7 +97,27 @@ bool ShotgunBullet::IsCircleCollision(POINTFLOAT otherPos, int otherRadius)
 	return false;
 }
 
-bool ShotgunBullet::IsCollision(POINTFLOAT otherPos, int otherRadius)
+bool ShotgunBullet::IsCollision(RECT other)
 {
+	if (!isSpread)
+	{
+		if (Bullet::IsCollision(other))
+		{
+			isShoot = false;
+			return true;
+		}
+	}
+	else
+	{
+		for (int i = 0; i < count; ++i)
+		{
+			if (bullets[i].GetIsShoot() && bullets[i].IsCollision(other))
+			{
+				bullets[i].SetIsShoot(false);
+				return true;
+			}
+		}
+	}
+
 	return false;
 }

@@ -7,6 +7,11 @@
 class MainGame : public GameNode
 {
 private:
+	enum GameStage
+	{
+		GS_ONE = 1, GS_TWO, GS_THREE, GS_FOUR, GS_FIVE, GS_SIX, GS_SEVEN, GS_AEIGHT, GS_END
+	};
+
 	HDC hdc;
 	PAINTSTRUCT ps;
 	HANDLE timer;
@@ -18,6 +23,8 @@ private:
 	int enemyNum;
 	Enemy* enemy;
 
+	GameStage stage = GS_END;
+
 public:
 
 	HRESULT Init();
@@ -28,6 +35,9 @@ public:
 	bool IsRectCollision(RECT target, RECT other);
 	bool IsCircleCollision(POINTFLOAT targetPos, int targetRadius, POINTFLOAT otherPos, int otherRadius);
 	bool IsCollision(RECT target, POINTFLOAT otherPos, int otherRadius);
+
+	void Reset();
+	void CreateEnemy(int count);
 
 	LRESULT CALLBACK MainWndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam);
 };

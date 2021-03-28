@@ -5,7 +5,7 @@ HRESULT Tank::Init()
 	pos.x = 100;
 	pos.y = 200;
 
-	angle = -45;
+	angle = -90;
 
 	size = 100;
 	curr = 0;
@@ -20,6 +20,10 @@ HRESULT Tank::Init()
 
 	skillBulletPtr = new ShotgunBullet();
 	skillBulletPtr->Init();
+
+	guideBulletCount = 10;
+	guideBulletPtr = new GuideBullet[guideBulletCount];
+	for (int i = 0; i < guideBulletCount;++i) guideBulletPtr[i].Init();
 
 	return S_OK;
 }
@@ -36,6 +40,7 @@ void Tank::Update()
 		bullets[i].Update();
 	}
 	skillBulletPtr->Update();
+	for (int i = 0; i < guideBulletCount; ++i) guideBulletPtr[i].Update();
 }
 
 void Tank::Render(HDC hdc)
@@ -51,6 +56,7 @@ void Tank::Render(HDC hdc)
 	}
 
 	skillBulletPtr->Render(hdc);
+	for (int i = 0; i < guideBulletCount; ++i) guideBulletPtr[i].Render(hdc);
 }
 
 void Tank::Release()
@@ -62,6 +68,9 @@ void Tank::Release()
 	delete[] bullets;
 	skillBulletPtr->Release();
 	delete skillBulletPtr;
+
+	for (int i = 0; i < guideBulletCount; ++i) guideBulletPtr[i].Release();
+	delete[] guideBulletPtr;
 }
 
 void Tank::Move(POINTFLOAT delta)
@@ -85,6 +94,19 @@ void Tank::FireSpecial()
 	{
 		float radian = PI * angle / 180;
 		skillBulletPtr->Fire({ (pos.x + cos(radian) * 30), (pos.y + sin(radian) * 30) }, 10, radian, 5);
+	}
+}
+
+void Tank::FireGuide()
+{
+	for (int i = 0; i < guideBulletCount; ++i)
+	{
+		if (!guideBulletPtr[i].GetIsShoot())
+		{
+			float radian = PI * angle / 180;
+			guideBulletPtr[i].Fire({ (pos.x + cos(radian) * 30), (pos.y + sin(radian) * 30) }, 10, radian, 5);
+			break;
+		}
 	}
 }
 

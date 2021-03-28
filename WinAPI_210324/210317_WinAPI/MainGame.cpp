@@ -4,45 +4,82 @@ HRESULT MainGame::Init()
 {
 	timer = (HANDLE)SetTimer(g_hWnd, 0, 10, NULL);
 	tank.Init();
-	enemyNum = 10;
-	enemy = new Enemy[enemyNum];
-	for (int i = 0; i < enemyNum; ++i)
-	{
-		enemy[i] = Enemy(10, rand() % 2 + 0.3f);
-		enemy[i].SetTank(&tank);
-		enemy[i].SetPos({(float)(rand() % WINSIZE_X), (float)(rand() % 100) });
-	}
+	tank.SetPoint({ WINSIZE_X / 2, WINSIZE_Y - 100 });
+	
+	stage = GS_ONE;
+	CreateEnemy(stage);
+
 	IsInited = true;
 	return S_OK;
 }
 
 void MainGame::Update()
 {
-	tank.Update();
+
 	int bulletNum = tank.GetBulletNum();
 	Bullet* bullets = tank.GetBullets();
 	Bullet* skillBullet = tank.GetSkillBulletPtr();
 
-	for (int i = 0; i < enemyNum; ++i)
+	if (stage != GS_END)
 	{
-		enemy[i].Update();
-		for (int l = 0; l < bulletNum; ++l)
+		bool isComplete = true;
+		for (int i = 0; i < enemyNum; ++i)
 		{
-			if (bullets[l].GetIsShoot() && enemy[i].GetState() == Enemy::EnemyState::ALIVE
-				&& IsRectCollision(enemy[i].GetRect(), bullets[l].GetRect()))
+			for (int l = 0; l < bulletNum; ++l)
 			{
-				enemy[i].SetState(Enemy::EnemyState::DEAD);
-				bullets[l].SetIsShoot(false);
-				break;
+				if (bullets[l].GetIsShoot() && enemy[i].GetState() == Enemy::EnemyState::ALIVE
+					&& IsCollision(enemy[i].GetRect(), bullets[l].GetPos(), bullets[l].GetSize()))
+				{
+					enemy[i].HitDamage(bullets[l].GetDamage());
+					bullets[l].SetIsShoot(false);
+					break;
+				}
+			}
+			if (skillBullet->GetIsShoot() && enemy[i].GetState() == Enemy::EnemyState::ALIVE
+				&& skillBullet->IsCollision(enemy[i].GetRect()))
+			{
+				enemy[i].HitDamage(skillBullet->GetDamage());
+			}
+
+			for (int l = 0; l < tank.GetGuideBulletCount(); ++l)
+			{
+				if (tank.GetGuideBulletPtr()[l].GetIsShoot())
+				{
+					if (enemy[i].GetState() == Enemy::EnemyState::ALIVE)
+					{
+						if (IsCollision(enemy[i].GetRect(), tank.GetGuideBulletPtr()[l].GetPos(), tank.GetGuideBulletPtr()[l].GetSize()))
+						{
+							tank.GetGuideBulletPtr()[l].SetIsShoot(false);
+							enemy[i].HitDamage(tank.GetGuideBulletPtr()[l].GetDamage());
+						}
+						else if (!tank.GetGuideBulletPtr()[l].IsHasTarget()
+							&& 0 < enemy[i].GetPos().x && enemy[i].GetPos().x < WINSIZE_X
+							&& 0 < enemy[i].GetPos().y && enemy[i].GetPos().y < WINSIZE_Y)
+						{
+							tank.GetGuideBulletPtr()[l].SetTarget(&enemy[i]);
+						}
+
+					}
+				}
+			}
+			enemy[i].Update();
+			if (enemy[i].GetState() == Enemy::EnemyState::ALIVE)
+			{
+				isComplete = false;
 			}
 		}
-		if (skillBullet->GetIsShoot() && enemy[i].GetState() == Enemy::EnemyState::ALIVE
-			&& skillBullet->IsRectCollision(enemy[i].GetRect()))
+
+		if (isComplete)
 		{
-			enemy[i].SetState(Enemy::EnemyState::DEAD);
+			stage = (GameStage)(stage + 1);
+			if (stage != GS_END)
+			{
+				Reset();
+				CreateEnemy(stage);
+			}
 		}
 	}
-	
+	tank.Update();
 }
 
 void MainGame::Render(HDC hdc)
@@ -52,12 +89,25 @@ void MainGame::Render(HDC hdc)
 	{
 		enemy[i].Render(hdc);
 	}
+	if (stage != GS_END)
+	{
+		string str = "STAGE " + to_string(stage);
+		TextOut(hdc, (WINSIZE_X - 40) / 2, WINSIZE_Y / 2, str.c_str(), str.length());
+	}
+	else
+	{
+		string str = "STAGE END";
+		TextOut(hdc, (WINSIZE_X - 60) / 2, WINSIZE_Y / 2, str.c_str(), str.length());
+	}
 }
 
 void MainGame::Release()
 {
 	tank.Release();
-	enemy->Release();
+	for (int i = 0; i < enemyNum; ++i)
+	{
+		enemy[i].Release();
+	}
 	delete[] enemy;
 	KillTimer(g_hWnd, 0);
 }
@@ -82,7 +132,79 @@ bool MainGame::IsCircleCollision(POINTFLOAT targetPos, int targetRadius, POINTFL
 
 bool MainGame::IsCollision(RECT target, POINTFLOAT otherPos, int otherRadius)
 {
+	// 사각형 안에 확인
+	if (target.left < otherPos.x && otherPos.x < target.right
+		&& target.top < otherPos.y && otherPos.y < target.bottom)
+	{
+		return true;
+	}
+	
+	// 각 꼭지점이 원안에 있는지 확인
+	POINTFLOAT points[4] = { {target.left, target.top}, {target.left, target.bottom}, {target.right, target.top}, {target.right, target.bottom} };
+	float dist;
+	float maxDist = otherRadius * otherRadius;
+	for (auto p : points)
+	{
+		dist = pow(p.x - otherPos.x, 2) + pow(p.y - otherPos.y, 2);
+		if (dist < maxDist)
+		{
+			return true;
+		}
+	}
+
+	// 각 면에서의 수직으로 나간 거리가 반지름보다 작은가 확인
+	if (target.left < otherPos.x && otherPos.x < target.right)
+	{
+		float minDistY = min(abs(otherPos.y - target.top), abs(otherPos.y - target.bottom));
+		if (minDistY < otherRadius)
+		{
+			return true;
+		}
+	}
+	else if (target.top < otherPos.y && otherPos.y < target.bottom)
+	{
+		float minDistX = min(abs(otherPos.x - target.left), abs(otherPos.x - target.right));
+		if (minDistX < otherRadius)
+		{
+			return true;
+		}
+	}
+
 	return false;
+}
+
+void MainGame::Reset()
+{
+	tank.SetPoint({ WINSIZE_X / 2, WINSIZE_Y - 100 });
+	for (int i = 0; i < tank.GetBulletNum(); ++i)
+	{
+		tank.GetBullets()[i].SetIsShoot(false);
+	}
+	tank.GetSkillBulletPtr()->SetIsShoot(false);
+	for (int i=0;i< tank.GetGuideBulletCount(); ++i)
+	{
+		tank.GetGuideBulletPtr()[i].SetIsShoot(false);
+		tank.GetGuideBulletPtr()[i].SetTarget(nullptr);
+	}
+}
+
+void MainGame::CreateEnemy(int count)
+{
+	if (enemy)
+	{
+		for (int i = 0; i < enemyNum; ++i) enemy[i].Release();
+		delete[] enemy;
+	}
+
+	enemyNum = count;
+	enemy = new Enemy[enemyNum];
+	for (int i = 0; i < enemyNum; ++i)
+	{
+		enemy[i] = Enemy(10, rand() % 2 + 1);
+		enemy[i].Init();
+		enemy[i].SetTank(&tank);
+		enemy[i].SetPos({ (float)(rand() % WINSIZE_X), -(100 + (float)(rand() % 500)) });
+	}
 }
 
 LRESULT MainGame::MainWndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
@@ -111,6 +233,10 @@ LRESULT MainGame::MainWndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lP
 		case 'd':
 		case 'D':
 			tank.Move({ 5, 0 });
+			break;
+		case 'g':
+		case 'G':
+			tank.FireGuide();
 			break;
 		case 'f':
 		case 'F':

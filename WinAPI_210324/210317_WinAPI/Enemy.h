@@ -20,8 +20,12 @@ private:
 	int size;
 	RECT rc;
 
+	int hp;
 
 	Tank* tankPtr = nullptr;
+
+	HBRUSH hBrushBlack = NULL;
+	HBRUSH hBrushRed = NULL;
 
 public:
 	Enemy() {}
@@ -33,7 +37,10 @@ public:
 	void Render(HDC hdc);
 	void Release();
 
+	void HitDamage(int damage);
+
 	inline void SetPos(POINTFLOAT pos) { this->pos = pos; }
+	inline POINTFLOAT GetPos() { return pos; }
 	inline void SetTank(Tank* tankPtr) { this->tankPtr = tankPtr; }
 	inline void SetState(Enemy::EnemyState state) { this->state = state; }
 	inline Enemy::EnemyState GetState() { return state; }

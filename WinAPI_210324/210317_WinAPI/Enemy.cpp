@@ -3,7 +3,11 @@
 
 HRESULT Enemy::Init()
 {
-	return E_NOTIMPL;
+	hp = 10;
+	hBrushBlack = CreateSolidBrush(RGB(0, 0, 0));
+	hBrushRed = CreateSolidBrush(RGB(255, 0, 0));
+
+	return S_OK;
 }
 
 void Enemy::Update()
@@ -27,9 +31,25 @@ void Enemy::Update()
 
 void Enemy::Render(HDC hdc)
 {
-	if(state == Enemy::EnemyState::ALIVE) Rectangle(hdc, rc.left, rc.top, rc.right, rc.bottom);
+	if (state == Enemy::EnemyState::ALIVE)
+	{
+		if (hp > 2) RenderRectangle(hdc, rc, hBrushBlack);
+		else if (hp > 1) RenderRectangle(hdc, rc, hBrushRed);
+		else RenderRectangle(hdc, rc);
+	}
 }
 
 void Enemy::Release()
 {
+	if (hBrushBlack == NULL) DeleteObject(hBrushBlack);
+	if (hBrushRed == NULL) DeleteObject(hBrushRed);
+}
+
+void Enemy::HitDamage(int damage)
+{
+	hp -= damage;
+	if (hp <= 0)
+	{
+		state = Enemy::EnemyState::DEAD;
+	}
 }

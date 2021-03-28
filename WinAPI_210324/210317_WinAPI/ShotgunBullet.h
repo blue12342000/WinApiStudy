@@ -21,6 +21,6 @@ public:
 
 	bool IsRectCollision(RECT other) override;
 	bool IsCircleCollision(POINTFLOAT otherPos, int otherRadius) override;
-	bool IsCollision(POINTFLOAT otherPos, int otherRadius) override;
+	bool IsCollision(RECT other) override;
 };
 

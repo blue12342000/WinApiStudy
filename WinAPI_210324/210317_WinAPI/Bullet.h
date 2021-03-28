@@ -11,6 +11,7 @@ protected:
 	float radian;
 	float speed;
 	RECT rc;
+	int damage = 1;
 
 public:
 	Bullet();
@@ -28,10 +29,13 @@ public:
 
 	virtual bool IsRectCollision(RECT other);
 	virtual bool IsCircleCollision(POINTFLOAT otherPos, int otherRadius);
-	virtual bool IsCollision(POINTFLOAT otherPos, int otherRadius);
+	virtual bool IsCollision(RECT other);
 
 	inline void SetIsShoot(bool isShoot) { this->isShoot = isShoot; }
 	inline bool GetIsShoot() { return isShoot; }
 	inline RECT GetRect() { return rc; }
+	inline int GetSize() { return size; }
+	inline POINTFLOAT GetPos() { return pos; }
+	inline int GetDamage() { return damage; }
 };
 

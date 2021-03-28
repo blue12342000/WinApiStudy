@@ -13,6 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="소스 파일\탄환">
+      <UniqueIdentifier>{52a7d271-3eff-4249-9688-e300b72a58bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\탄환\기본">
+      <UniqueIdentifier>{b9cf6d3c-30d1-4efe-902e-ff0b4bba5006}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\유닛">
+      <UniqueIdentifier>{281b014f-da43-456e-a887-e9f1680af3be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -21,17 +30,20 @@
     <ClCompile Include="MainGame.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Tank.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="ShotgunBullet.cpp">
+      <Filter>소스 파일\탄환</Filter>
     </ClCompile>
     <ClCompile Include="Bullet.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\탄환\기본</Filter>
     </ClCompile>
-    <ClCompile Include="ShotgunBullet.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="Tank.cpp">
+      <Filter>소스 파일\유닛</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\유닛</Filter>
+    </ClCompile>
+    <ClCompile Include="GuideBullet.cpp">
+      <Filter>소스 파일\탄환</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -44,20 +56,23 @@
     <ClInclude Include="Main.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Tank.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Config.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Bullet.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="ShotgunBullet.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>소스 파일\탄환</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>소스 파일\탄환\기본</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>소스 파일\유닛</Filter>
+    </ClInclude>
+    <ClInclude Include="Tank.h">
+      <Filter>소스 파일\유닛</Filter>
+    </ClInclude>
+    <ClInclude Include="GuideBullet.h">
+      <Filter>소스 파일\탄환</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

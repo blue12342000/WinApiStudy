@@ -83,7 +83,45 @@ bool Bullet::IsCircleCollision(POINTFLOAT otherPos, int otherRadius)
 	return false;
 }
 
-bool Bullet::IsCollision(POINTFLOAT otherPos, int otherRadius)
+bool Bullet::IsCollision(RECT other)
 {
+	// 사각형 안에 확인
+	if (other.left < pos.x && pos.x < other.right
+		&& other.top < pos.y && pos.y < other.bottom)
+	{
+		return true;
+	}
+
+	// 각 꼭지점이 원안에 있는지 확인
+	POINTFLOAT points[4] = { {other.left, other.top}, {other.left, other.bottom}, {other.right, other.top}, {other.right, other.bottom} };
+	float dist;
+	float maxDist = size * size;
+	for (auto p : points)
+	{
+		dist = pow(p.x - pos.x, 2) + pow(p.y - pos.y, 2);
+		if (dist < maxDist)
+		{
+			return true;
+		}
+	}
+
+	// 각 면에서의 수직으로 나간 거리가 반지름보다 작은가 확인
+	if (other.left < pos.x && pos.x < other.right)
+	{
+		float minDistY = min(abs(pos.y - other.top), abs(pos.y - other.bottom));
+		if (minDistY < size)
+		{
+			return true;
+		}
+	}
+	else if (other.top < pos.y && pos.y < other.bottom)
+	{
+		float minDistX = min(abs(pos.x - other.left), abs(pos.x - other.right));
+		if (minDistX < size)
+		{
+			return true;
+		}
+	}
+
 	return false;
 }
