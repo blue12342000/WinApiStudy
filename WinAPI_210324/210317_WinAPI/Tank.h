@@ -4,6 +4,7 @@
 #include "ShotgunBullet.h"
 #include "GuideBullet.h"
 
+class SpecialBullet;
 class Tank : public GameNode
 {
 private:
@@ -24,6 +25,8 @@ private:
 	int guideBulletCount;
 	GuideBullet* guideBulletPtr = nullptr;
 
+	SpecialBullet* signatureBullet = nullptr;
+
 public:
 	HRESULT Init();
 	void Update();
@@ -34,6 +37,7 @@ public:
 	void Fire();
 	void FireSpecial();
 	void FireGuide();
+	void FireSignature();
 	void Dead();
 
 	void RotateFire(float angle);
@@ -46,5 +50,6 @@ public:
 	inline ShotgunBullet* GetSkillBulletPtr() { return skillBulletPtr; }
 	inline int GetGuideBulletCount() { return guideBulletCount; }
 	inline GuideBullet* GetGuideBulletPtr() { return guideBulletPtr; }
+	inline SpecialBullet* GetSpecialBullet() { return signatureBullet; }
 };
 

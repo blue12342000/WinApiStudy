@@ -36,3 +36,16 @@ inline void RenderEllipse(HDC hdc, RECT rc, HBRUSH hBrush = NULL, HPEN hPen = NU
 	if (hPen != NULL) SelectObject(hdc, hOldPen);
 	if (hBrush != NULL) SelectObject(hdc, hOldBrush);
 }
+
+inline void RenderLineTo(HDC hdc, POINTFLOAT pos, float angle, float length, HBRUSH hBrush = NULL, HPEN hPen = NULL)
+{
+	HBRUSH hOldBrush = NULL;
+	HPEN hOldPen = NULL;
+	if (hBrush != NULL) hOldBrush = (HBRUSH)SelectObject(hdc, hBrush);
+	if (hPen != NULL) hOldPen = (HPEN)SelectObject(hdc, hBrush);
+	POINT target = {(int)(pos.x + cosf(angle) * length), (int)(pos.y + sinf(angle) * length)};
+	MoveToEx(hdc, (int)pos.x, (int)pos.y, nullptr);
+	LineTo(hdc, target.x, target.y);
+	if (hPen != NULL) SelectObject(hdc, hOldPen);
+	if (hBrush != NULL) SelectObject(hdc, hOldBrush);
+}

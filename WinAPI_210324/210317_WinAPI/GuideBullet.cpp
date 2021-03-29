@@ -34,7 +34,7 @@ void GuideBullet::Update()
 			float deltaRadian = targetRadian - radian;
 			
 			// 가장 최단거리로 변경해줌
-			if (deltaRadian < -PI)
+			if (deltaRadian <= -PI)
 			{
 				deltaRadian += PI * 2;
 			}

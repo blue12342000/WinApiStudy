@@ -1,4 +1,5 @@
 #include "Tank.h"
+#include "SpecialBullet.h"
 
 HRESULT Tank::Init()
 {
@@ -25,6 +26,9 @@ HRESULT Tank::Init()
 	guideBulletPtr = new GuideBullet[guideBulletCount];
 	for (int i = 0; i < guideBulletCount;++i) guideBulletPtr[i].Init();
 
+	signatureBullet = new SpecialBullet();
+	signatureBullet->Init();
+
 	return S_OK;
 }
 
@@ -41,6 +45,7 @@ void Tank::Update()
 	}
 	skillBulletPtr->Update();
 	for (int i = 0; i < guideBulletCount; ++i) guideBulletPtr[i].Update();
+	signatureBullet->Update();
 }
 
 void Tank::Render(HDC hdc)
@@ -57,6 +62,7 @@ void Tank::Render(HDC hdc)
 
 	skillBulletPtr->Render(hdc);
 	for (int i = 0; i < guideBulletCount; ++i) guideBulletPtr[i].Render(hdc);
+	signatureBullet->Render(hdc);
 }
 
 void Tank::Release()
@@ -71,6 +77,9 @@ void Tank::Release()
 
 	for (int i = 0; i < guideBulletCount; ++i) guideBulletPtr[i].Release();
 	delete[] guideBulletPtr;
+
+	signatureBullet->Release();
+	delete signatureBullet;
 }
 
 void Tank::Move(POINTFLOAT delta)
@@ -107,6 +116,15 @@ void Tank::FireGuide()
 			guideBulletPtr[i].Fire({ (pos.x + cos(radian) * 30), (pos.y + sin(radian) * 30) }, 10, radian, 5);
 			break;
 		}
+	}
+}
+
+void Tank::FireSignature()
+{
+	if (!signatureBullet->GetIsShoot())
+	{
+		float radian = PI * angle / 180;
+		signatureBullet->Fire({ (pos.x + cos(radian) * 30), (pos.y + sin(radian) * 30) }, 10, radian, 1);
 	}
 }
 

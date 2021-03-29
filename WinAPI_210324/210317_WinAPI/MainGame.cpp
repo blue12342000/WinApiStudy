@@ -1,4 +1,5 @@
 #include "MainGame.h"
+#include "SpecialBullet.h"
 
 HRESULT MainGame::Init()
 {
@@ -92,12 +93,12 @@ void MainGame::Render(HDC hdc)
 	if (stage != GS_END)
 	{
 		string str = "STAGE " + to_string(stage);
-		TextOut(hdc, (WINSIZE_X - 40) / 2, WINSIZE_Y / 2, str.c_str(), str.length());
+		TextOut(hdc, 10, 10, str.c_str(), str.length());
 	}
 	else
 	{
 		string str = "STAGE END";
-		TextOut(hdc, (WINSIZE_X - 60) / 2, WINSIZE_Y / 2, str.c_str(), str.length());
+		TextOut(hdc, 10, 10, str.c_str(), str.length());
 	}
 }
 
@@ -202,8 +203,8 @@ void MainGame::CreateEnemy(int count)
 	{
 		enemy[i] = Enemy(10, rand() % 2 + 1);
 		enemy[i].Init();
-		enemy[i].SetTank(&tank);
-		enemy[i].SetPos({ (float)(rand() % WINSIZE_X), -(100 + (float)(rand() % 500)) });
+		//enemy[i].SetTank(&tank);
+		enemy[i].SetPos({ (float)(WINSIZE_X / 2), ((float)(WINSIZE_Y / 2)) });
 	}
 }
 
@@ -241,6 +242,11 @@ LRESULT MainGame::MainWndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lP
 		case 'f':
 		case 'F':
 			tank.FireSpecial();
+			break;
+		case 'h':
+		case 'H':
+			tank.FireSignature();
+			tank.GetSpecialBullet()->SetTarget(&enemy[0]);
 			break;
 		case VK_SPACE:
 			tank.Fire();
