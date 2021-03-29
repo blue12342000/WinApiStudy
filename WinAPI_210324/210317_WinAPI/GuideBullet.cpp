@@ -23,7 +23,6 @@ void GuideBullet::Update()
 
 	if (target)
 	{
-		++timer;
 		if (target->GetState() == Enemy::EnemyState::DEAD)
 		{
 			target = nullptr;
@@ -35,13 +34,16 @@ void GuideBullet::Update()
 			float deltaRadian = targetRadian - radian;
 			
 			// 가장 최단거리로 변경해줌
-			if (deltaRadian < 0 && deltaRadian < -PI) deltaRadian += PI * 2;
-			else if (deltaRadian > 0 && deltaRadian > PI) deltaRadian -= PI * 2;
+			if (deltaRadian < -PI)
+			{
+				deltaRadian += PI * 2;
+			}
 
 			if (timer >= rotateDelay) timer = rotateDelay - 1;
 			rodateRadian = deltaRadian / (rotateDelay - timer);
 			radian += rodateRadian;
 		}
+		++timer;
 	}
 	else
 	{
