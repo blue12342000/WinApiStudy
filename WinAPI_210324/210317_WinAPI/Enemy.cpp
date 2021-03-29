@@ -22,6 +22,25 @@ void Enemy::Update()
 		pos.x += cosf(angle) * speed;
 		pos.y += sinf(angle) * speed;
 	}
+	else
+	{
+		if (move == EnemyMove::EM_LEFT)
+		{
+			pos.x -= 1;
+			if (pos.x < (WINSIZE_X / 2 - 100))
+			{
+				move = EnemyMove::EM_RIGHT;
+			}
+		}
+		else
+		{
+			pos.x += 1;
+			if (pos.x > (WINSIZE_X / 2 + 100))
+			{
+				move = EnemyMove::EM_LEFT;
+			}
+		}
+	}
 
 	rc.left = pos.x - size / 2;
 	rc.right = pos.x + size / 2;

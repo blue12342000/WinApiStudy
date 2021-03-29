@@ -29,10 +29,12 @@ void SpecialBullet::MoveCircleLine()
 {
 	if (timer < 200)
 	{
+		float circlaRadian;
 		for (int i = 0; i < 100; ++i)
 		{
-			pointCircle[i].pos.x += cos(circleAngle[i / 25]) * 1.5f;
-			pointCircle[i].pos.y += sin(circleAngle[i / 25]) * 1.5f;
+			circlaRadian = PI * circleAngle[i / 25] / 180;
+			pointCircle[i].pos.x += cos(circlaRadian) * 1.5f;
+			pointCircle[i].pos.y += sin(circlaRadian) * 1.5f;
 			pointCircle[i].radius = 10 + timer / 20;
 
 			if (timer == 199 && i % 25 == 0)
@@ -52,7 +54,7 @@ void SpecialBullet::MoveCircleLine()
 		{
 			for (int i = 0; i < 4; ++i)
 			{
-				circleAngle[i] += (PI / 2) / 25;
+				circleRadian[i] += (PI / 2) / 25;
 				pointCircle[25 * i + (deltaTimer / 10 + 1)].isActive = true;
 			}
 		}
@@ -65,7 +67,7 @@ void SpecialBullet::MoveCircleLine()
 				continue;
 			}
 
-			target = { pos.x + cosf(circleAngle[i / 25]) * 300, pos.y + sinf(circleAngle[i / 25]) * 300 };
+			target = { pos.x + cosf(circleRadian[i / 25]) * 300, pos.y + sinf(circleRadian[i / 25]) * 300 };
 			delta = { target.x - pre.x, target.y - pre.y };
 			targetAngle = atan2f(delta.y, delta.x);
 			targetDistance = sqrt(delta.x * delta.x + delta.y * delta.y);
@@ -132,20 +134,36 @@ void SpecialBullet::FireGuidArrow()
 	circleStartAngle += PI / 200;
 	if (circleStartAngle > PI * 2) circleStartAngle -= PI * 2;
 	float circleAngle, outAngle;
+
+	int arrIdx[800];
+	for (int i = 0; i < 800; ++i)
+	{
+		arrIdx[i] = i;
+	}
+	for (int i = 0; i < 2000; ++i)
+	{
+		swap(arrIdx[rand() % 800], arrIdx[rand() % 800]);
+	}
+
 	for (int i = 0; i < 100; ++i)
 	{
 		circleAngle = circleStartAngle + PI * 2 / 100 * i;
 		if (circleAngle > PI * 2) circleAngle -= PI * 2;
 		pointCircle[i].pos = { pos.x + cos(circleAngle) * 300, pos.y + sin(circleAngle) * 300 };
-		if (timer < 400)
+		if (timer < 400 && timer % 5 == 0)
 		{
-			if (timer % 50 == 0)
-			{
-				outAngle = circleAngle - PI / 4;
-				if (outAngle < 0) outAngle += PI * 2;
-				guideBullet[i * 8 + timer / 50].Fire(pointCircle[i].pos, 10, outAngle, 4);
-				guideBullet[i * 8 + timer / 50].SetTarget(target);
-			}
+			outAngle = circleAngle - PI / 4;
+			if (outAngle < 0) outAngle += PI * 2;
+			guideBullet[i * 8 + timer / 50].Fire(pointCircle[i].pos, 10, outAngle, 4);
+			guideBullet[i * 8 + timer / 50].SetTarget(target);
+			//for (int k = 0; k < 10; ++k)
+			//{
+			//	if (arrIdx[timer / 5 * 10 + k] == i)
+			//	{
+			//		guideBullet[arrIdx[timer / 5 * 10 + k]].Fire(pointCircle[arrIdx[timer / 5 * 10 + k] / 8].pos, 10, outAngle, 4);
+			//		guideBullet[arrIdx[timer / 5 * 10 + k]].SetTarget(target);
+			//	}
+			//}
 		}
 	}
 
@@ -164,10 +182,16 @@ void SpecialBullet::FireFinish()
 			for (int h = 0; h < 5; ++h)
 			{
 				fireAngle = circleAngle + PI * 2 / 5 * h;
-				if (fireAngle > PI * 2) fireAngle -= PI * 2;
+				if (fireAngle >= PI * 2) fireAngle -= PI * 2;
+				else if (fireAngle <= PI * 2) fireAngle += PI * 2;
 				guideBullet[timer / 2 * 5 + h].Init();
 				guideBullet[timer / 2 * 5 + h].Fire(pointCircle[timer / 2].pos, 10, fireAngle, 4);
 				guideBullet[timer / 2 * 5 + h].SetTarget(target);
+
+				for (int k = h; k < 5; ++k)
+				{
+					guideBullet[timer / 2 * 5 + h].Update();
+				}
 			}
 		}
 	}
@@ -251,7 +275,8 @@ void SpecialBullet::Update()
 
 			for (int i = 0; i < 4; ++i)
 			{
-				circleAngle[i] = PI / 2 * i;
+				circleAngle[i] = 90 * i;
+				circleRadian[i] = PI / 2 * i;
 			}
 		}
 		SetRect();
@@ -314,7 +339,7 @@ void SpecialBullet::Update()
 		break;
 	case SpecialBullet::SpecialBulletState::SBS_END:
 		FireFinish();
-		if (timer % 4 == 0 || timer >= 200)
+		if (timer >= 200)
 		{
 			for (int i = 0; i < 800; ++i)
 			{

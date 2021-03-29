@@ -7,9 +7,10 @@
 #define WINSIZE_X 1080
 #define WINSIZE_Y 720
 #include <string>
+#include <ctime>
 #include <cmath>
 
-#define PI 3.141592f
+#define PI 3.1415926535f
 
 using namespace std;
 

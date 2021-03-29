@@ -50,10 +50,11 @@ private:
 	float rodateRadian;
 
 	// 서클의 각 시작각
-	float circleAngle[4];
+	int circleAngle[4];
 	PointCircle pointCircle[100];
 
 	// 별 윤곽 그리기
+	float circleRadian[4];
 	PointLine pointLine[5];
 
 	// 원회전

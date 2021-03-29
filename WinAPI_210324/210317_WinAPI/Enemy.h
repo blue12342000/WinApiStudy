@@ -12,8 +12,15 @@ public:
 		DEAD
 	};
 
+	enum class EnemyMove
+	{
+		EM_LEFT,
+		EM_RIGHT
+	};
+
 private:
 	EnemyState state = Enemy::EnemyState::ALIVE;
+	EnemyMove move = EnemyMove::EM_LEFT;
 	POINTFLOAT pos;
 	float angle;
 	float speed;

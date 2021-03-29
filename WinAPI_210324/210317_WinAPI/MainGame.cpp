@@ -4,6 +4,8 @@
 HRESULT MainGame::Init()
 {
 	timer = (HANDLE)SetTimer(g_hWnd, 0, 10, NULL);
+	srand(time(NULL));
+
 	tank.Init();
 	tank.SetPoint({ WINSIZE_X / 2, WINSIZE_Y - 100 });
 	
