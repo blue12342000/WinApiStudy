@@ -12,12 +12,49 @@ HRESULT MainGame::Init()
 	stage = GS_ONE;
 	CreateEnemy(stage);
 
+	//keyMgr.Init();
+	KeyManager::GetInstance()->Init();
+
 	IsInited = true;
 	return S_OK;
 }
 
 void MainGame::Update()
 {
+	KeyManager::GetInstance()->Update();
+	if (KeyManager::GetInstance()->IsStayKeyDown('W'))
+	{
+		tank.Move({ 0, -5 });
+	}
+	else if (KeyManager::GetInstance()->IsStayKeyDown('A'))
+	{
+		tank.Move({ -5, 0 });
+	}
+	else if (KeyManager::GetInstance()->IsStayKeyDown('S'))
+	{
+		tank.Move({ 0, 5 });
+	}
+	else if (KeyManager::GetInstance()->IsStayKeyDown('D'))
+	{
+		tank.Move({ 5, 0 });
+	}
+	else if (KeyManager::GetInstance()->IsOnceKeyDown(VK_SPACE))
+	{
+		tank.Fire();
+	}
+	else if (KeyManager::GetInstance()->IsOnceKeyDown('G'))
+	{
+		tank.FireGuide();
+	}
+	else if (KeyManager::GetInstance()->IsOnceKeyDown('F'))
+	{
+		tank.FireSpecial();
+	}
+	else if (KeyManager::GetInstance()->IsOnceKeyDown('H'))
+	{
+		tank.FireSignature();
+		tank.GetSpecialBullet()->SetTarget(&enemy[0]);
+	}
 
 	int bulletNum = tank.GetBulletNum();
 	Bullet* bullets = tank.GetBullets();
@@ -218,50 +255,50 @@ LRESULT MainGame::MainWndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lP
 	{
 	case WM_CREATE:
 		break;
-	case WM_KEYDOWN:
-		switch (wParam)
-		{
-		case 'w':
-		case 'W':
-			tank.Move({ 0, -5 });
-			break;
-		case 'a':
-		case 'A':
-			tank.Move({ -5, 0 });
-			break;
-		case 's':
-		case 'S':
-			tank.Move({ 0, 5 });
-			break;
-		case 'd':
-		case 'D':
-			tank.Move({ 5, 0 });
-			break;
-		case 'g':
-		case 'G':
-			tank.FireGuide();
-			break;
-		case 'f':
-		case 'F':
-			tank.FireSpecial();
-			break;
-		case 'h':
-		case 'H':
-			tank.FireSignature();
-			tank.GetSpecialBullet()->SetTarget(&enemy[0]);
-			break;
-		case VK_SPACE:
-			tank.Fire();
-			break;
-		case VK_LEFT:
-			tank.RotateFire(-5);
-			break;
-		case VK_RIGHT:
-			tank.RotateFire(+5);
-			break;
-		}
-		InvalidateRect(hWnd, NULL, true);
-		break;
+	//case WM_KEYDOWN:
+	//	switch (wParam)
+	//	{
+	//	case 'w':
+	//	case 'W':
+	//		tank.Move({ 0, -5 });
+	//		break;
+	//	case 'a':
+	//	case 'A':
+	//		tank.Move({ -5, 0 });
+	//		break;
+	//	case 's':
+	//	case 'S':
+	//		tank.Move({ 0, 5 });
+	//		break;
+	//	case 'd':
+	//	case 'D':
+	//		tank.Move({ 5, 0 });
+	//		break;
+	//	case 'g':
+	//	case 'G':
+	//		tank.FireGuide();
+	//		break;
+	//	case 'f':
+	//	case 'F':
+	//		tank.FireSpecial();
+	//		break;
+	//	case 'h':
+	//	case 'H':
+	//		tank.FireSignature();
+	//		tank.GetSpecialBullet()->SetTarget(&enemy[0]);
+	//		break;
+	//	case VK_SPACE:
+	//		tank.Fire();
+	//		break;
+	//	case VK_LEFT:
+	//		tank.RotateFire(-5);
+	//		break;
+	//	case VK_RIGHT:
+	//		tank.RotateFire(+5);
+	//		break;
+	//	}
+	//	InvalidateRect(hWnd, NULL, true);
+	//	break;
 	case WM_PAINT:
 		hdc = BeginPaint(g_hWnd, &ps);
 		if (IsInited) Render(hdc);

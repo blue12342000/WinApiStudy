@@ -9,6 +9,7 @@
 #include <string>
 #include <ctime>
 #include <cmath>
+#include "KeyManager.h"
 
 #define PI 3.1415926535f
 

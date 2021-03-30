@@ -349,6 +349,10 @@ void SpecialBullet::Update()
 		if (timer == 400)
 		{
 			isShoot = false;
+			for (int i = 0; i < 800; ++i)
+			{
+				guideBullet[i].Init();
+			}
 		}
 		break;
 	}

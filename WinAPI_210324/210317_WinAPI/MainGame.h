@@ -3,6 +3,7 @@
 #include "GameNode.h"
 #include "Tank.h"
 #include "Enemy.h"
+#include "KeyManager.h"
 
 class MainGame : public GameNode
 {
@@ -24,6 +25,8 @@ private:
 	Enemy* enemy;
 
 	GameStage stage = GS_END;
+
+	//KeyManager keyMgr;
 
 public:
 

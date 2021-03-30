@@ -48,6 +48,9 @@
     <ClCompile Include="SpecialBullet.cpp">
       <Filter>소스 파일\탄환</Filter>
     </ClCompile>
+    <ClCompile Include="KeyManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameNode.h">
@@ -79,6 +82,12 @@
     </ClInclude>
     <ClInclude Include="SpecialBullet.h">
       <Filter>소스 파일\탄환</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyManager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>소스 파일</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
