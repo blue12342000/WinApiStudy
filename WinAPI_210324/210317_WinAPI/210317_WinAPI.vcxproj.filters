@@ -25,6 +25,9 @@
     <Filter Include="소스 파일\2D Framework">
       <UniqueIdentifier>{f52c423d-8a2c-49ac-af37-a8e44991654a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\유닛\캐릭터 기본형">
+      <UniqueIdentifier>{c21b4ba4-24c2-47b0-8cfc-09e362758404}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -61,6 +64,12 @@
       <Filter>소스 파일\유닛</Filter>
     </ClCompile>
     <ClCompile Include="Charactor.cpp">
+      <Filter>소스 파일\유닛\캐릭터 기본형</Filter>
+    </ClCompile>
+    <ClCompile Include="ChLasswellKing.cpp">
+      <Filter>소스 파일\유닛</Filter>
+    </ClCompile>
+    <ClCompile Include="BonneJenet.cpp">
       <Filter>소스 파일\유닛</Filter>
     </ClCompile>
   </ItemGroup>
@@ -111,6 +120,12 @@
       <Filter>소스 파일\유닛</Filter>
     </ClInclude>
     <ClInclude Include="Charactor.h">
+      <Filter>소스 파일\유닛\캐릭터 기본형</Filter>
+    </ClInclude>
+    <ClInclude Include="ChLasswellKing.h">
+      <Filter>소스 파일\유닛</Filter>
+    </ClInclude>
+    <ClInclude Include="BonneJenet.h">
       <Filter>소스 파일\유닛</Filter>
     </ClInclude>
   </ItemGroup>

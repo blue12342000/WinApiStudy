@@ -64,13 +64,19 @@ HRESULT Image::Init(std::string filename, int width, int height, int frameX, int
 
 void Image::Render(HDC hdc, int startX, int startY, int drawWidth, int drawHeight, int drawStartX, int drawStartY)
 {
-	BitBlt(hdc, startX, startY, (drawWidth < 0) ? lpImageInfo->width : drawWidth, (drawHeight < 0) ? lpImageInfo->height : drawHeight, lpImageInfo->hMemoryDC, (drawStartX < 0) ? 0 : drawStartX, (drawStartY < 0) ? 0 : drawStartY, SRCCOPY);
+	if (lpImageInfo)
+	{
+		BitBlt(hdc, startX, startY, (drawWidth < 0) ? lpImageInfo->width : drawWidth, (drawHeight < 0) ? lpImageInfo->height : drawHeight, lpImageInfo->hMemoryDC, (drawStartX < 0) ? 0 : drawStartX, (drawStartY < 0) ? 0 : drawStartY, SRCCOPY);
+	}
 }
 
 void Image::RenderFrame(HDC hdc, int startX, int startY, int frameIndex)
 {
-	frameIndex %= totalFrames;
-	BitBlt(hdc, startX, startY, lpImageInfo->width, lpImageInfo->height, lpImageInfo->hMemoryDC, lpImageInfo->width * (frameIndex % frameX), lpImageInfo->height * (frameIndex / frameX), SRCCOPY);
+	if (lpImageInfo)
+	{
+		frameIndex %= totalFrames;
+		BitBlt(hdc, startX, startY, lpImageInfo->width, lpImageInfo->height, lpImageInfo->hMemoryDC, lpImageInfo->width * (frameIndex % frameX), lpImageInfo->height * (frameIndex / frameX), SRCCOPY);
+	}
 }
 
 void Image::Release()

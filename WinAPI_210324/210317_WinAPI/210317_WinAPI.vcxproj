@@ -139,8 +139,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BonneJenet.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Charactor.cpp" />
+    <ClCompile Include="ChLasswellKing.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GuideBullet.cpp" />
     <ClCompile Include="Image.cpp" />
@@ -153,8 +155,10 @@
     <ClCompile Include="Tank.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BonneJenet.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Charactor.h" />
+    <ClInclude Include="ChLasswellKing.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="GameNode.h" />

@@ -3,18 +3,12 @@
 
 HRESULT Charactor::Init()
 {
-	width = 111 * 2;
-	height = 83 * 2;
+	state = CharaterState::CS_END;
 
-	fileName = "Image/Lasswell_Hess_King/Lasswell(Hess_King)/Lasswell King (5)/unit_idle_100023005.bmp";
-	img = new Image();
-	if (FAILED(img->Init(fileName, width * 3, height * 4, 3, 4)))
-	{
-		img->Release();
-		delete img;
-		img = nullptr;
-		MessageBox(g_hWnd, "캐릭터이미지 로드에 실패하였습니다.", "Error", MB_OK);
-	}
+	width = 0;
+	height = 0;
+
+	img = nullptr;
 
 	elapedTime = 0;
 	frame = 0;
@@ -29,7 +23,7 @@ void Charactor::Update()
 {
 	if (elapedTime++ % 5 == 0)
 	{
-		++frame %= img->GetTotalFrames();
+		++frame %= img[(int)state].GetTotalFrames();
 	}
 
 	rc.left = pos.x - width / 2;
@@ -40,15 +34,18 @@ void Charactor::Update()
 
 void Charactor::Render(HDC hdc)
 {
-	if (img) img->RenderFrame(hdc, rc.left, rc.top, frame);
+	if (img) img[(int)state].RenderFrame(hdc, rc.left, rc.top, frame);
 }
 
 void Charactor::Release()
 {
 	if (img)
 	{
-		img->Release();
-		delete img;
+		for (int i = 0; i < (int)CharaterState::CS_END; ++i)
+		{
+			img[(int)state].Release();
+		}
+		delete[] img;
 		img = nullptr;
 	}
 }

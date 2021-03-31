@@ -31,7 +31,7 @@ private:
 	Image* backBuffer;
 	Image* imageBin;
 
-	Charactor* lasswellKing;
+	Charactor* bonneJenet;
 public:
 
 	HRESULT Init();

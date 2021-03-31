@@ -2,7 +2,8 @@
 #include "SpecialBullet.h"
 #include "Image.h"
 #include "Iori.h"
-#include "Charactor.h"
+#include "ChLasswellKing.h"
+#include "BonneJenet.h"
 
 HRESULT MainGame::Init()
 {
@@ -24,9 +25,9 @@ HRESULT MainGame::Init()
 	imageBin = new Image();
 	imageBin->Init("Image/bgImage.bmp", WINSIZE_X, WINSIZE_Y);
 	
-	lasswellKing = new Charactor();
-	lasswellKing->Init();
-	lasswellKing->SetPos({WINSIZE_X / 2, WINSIZE_Y - 400});
+	bonneJenet = new BonneJenet();
+	bonneJenet->Init();
+	bonneJenet->SetPos({WINSIZE_X / 2, WINSIZE_Y - 400});
 
 	IsInited = true;
 	return S_OK;
@@ -35,26 +36,26 @@ HRESULT MainGame::Init()
 void MainGame::Update()
 {
 	KeyManager::GetInstance()->Update();
-	if (KeyManager::GetInstance()->IsStayKeyDown('W'))
-	{
-		tank.Move({ 0, -5 });
-	}
-	if (KeyManager::GetInstance()->IsStayKeyDown('A'))
-	{
-		tank.Move({ -5, 0 });
-	}
-	if (KeyManager::GetInstance()->IsStayKeyDown('S'))
-	{
-		tank.Move({ 0, 5 });
-	}
-	if (KeyManager::GetInstance()->IsStayKeyDown('D'))
-	{
-		tank.Move({ 5, 0 });
-	}
-	if (KeyManager::GetInstance()->IsOnceKeyDown(VK_SPACE))
-	{
-		tank.Fire();
-	}
+	//if (KeyManager::GetInstance()->IsStayKeyDown('W'))
+	//{
+	//	tank.Move({ 0, -5 });
+	//}
+	//if (KeyManager::GetInstance()->IsStayKeyDown('A'))
+	//{
+	//	tank.Move({ -5, 0 });
+	//}
+	//if (KeyManager::GetInstance()->IsStayKeyDown('S'))
+	//{
+	//	tank.Move({ 0, 5 });
+	//}
+	//if (KeyManager::GetInstance()->IsStayKeyDown('D'))
+	//{
+	//	tank.Move({ 5, 0 });
+	//}
+	//if (KeyManager::GetInstance()->IsOnceKeyDown(VK_SPACE))
+	//{
+	//	tank.Fire();
+	//}
 	if (KeyManager::GetInstance()->IsOnceKeyDown('G'))
 	{
 		tank.FireGuide();
@@ -141,7 +142,7 @@ void MainGame::Update()
 		}
 	}
 	tank.Update();
-	lasswellKing->Update();
+	bonneJenet->Update();
 
 	InvalidateRect(g_hWnd, NULL, false);
 }
@@ -166,15 +167,15 @@ void MainGame::Render(HDC hdc)
 		TextOut(hBackDC, 10, 10, str.c_str(), str.length());
 	}
 
-	lasswellKing->Render(hBackDC);
+	bonneJenet->Render(hBackDC);
 
 	backBuffer->Render(hdc);
 }
 
 void MainGame::Release()
 {
-	lasswellKing->Release();
-	delete lasswellKing;
+	bonneJenet->Release();
+	delete bonneJenet;
 
 	imageBin->Release();
 	delete imageBin;
