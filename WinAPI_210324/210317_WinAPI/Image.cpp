@@ -24,7 +24,7 @@ HRESULT Image::Init(int width, int height)
 	return S_OK;
 }
 
-HRESULT Image::Init(std::string& filename, int width, int height, int frameX, int frameY)
+HRESULT Image::Init(std::string filename, int width, int height, int frameX, int frameY)
 {
 	HDC hdc = GetDC(g_hWnd);
 
@@ -52,7 +52,7 @@ HRESULT Image::Init(std::string& filename, int width, int height, int frameX, in
 	return S_OK;
 }
 
-HRESULT Image::Init(std::string& filename, int width, int height, int frameX, int frameY, int totalFrames)
+HRESULT Image::Init(std::string filename, int width, int height, int frameX, int frameY, int totalFrames)
 {
 	if (FAILED(Init(filename, width, height, frameX, frameY)))
 	{

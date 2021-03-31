@@ -52,8 +52,8 @@ public:
 	HRESULT Init(int width, int height);
 
 	// 파일로부터 이미지를 로드하는 함수
-	HRESULT Init(std::string& filename, int width, int height, int frameX = 1, int frameY = 1);
-	HRESULT Init(std::string& filename, int width, int height, int frameX, int frameY, int totalFrames);
+	HRESULT Init(std::string filename, int width, int height, int frameX = 1, int frameY = 1);
+	HRESULT Init(std::string filename, int width, int height, int frameX, int frameY, int totalFrames);
 	void Update() {}
 
 	// 화면에 출력
