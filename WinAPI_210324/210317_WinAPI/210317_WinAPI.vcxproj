@@ -140,8 +140,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="Charactor.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GuideBullet.cpp" />
+    <ClCompile Include="Image.cpp" />
+    <ClCompile Include="Iori.cpp" />
     <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGame.cpp" />
@@ -151,17 +154,24 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="Charactor.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="GameNode.h" />
     <ClInclude Include="GuideBullet.h" />
+    <ClInclude Include="Image.h" />
+    <ClInclude Include="Iori.h" />
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="MainGame.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="ShotgunBullet.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="SpecialBullet.h" />
     <ClInclude Include="Tank.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="210317_WinAPI.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

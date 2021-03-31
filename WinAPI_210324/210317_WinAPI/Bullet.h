@@ -1,6 +1,7 @@
 #pragma once
 #include "GameNode.h"
 
+class Image;
 class Bullet : public GameNode
 {
 protected:
@@ -12,6 +13,8 @@ protected:
 	float speed;
 	RECT rc;
 	int damage = 1;
+
+	Image* imageBullet = nullptr;
 
 public:
 	Bullet();

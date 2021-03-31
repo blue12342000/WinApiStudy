@@ -16,6 +16,7 @@
 using namespace std;
 
 extern HWND g_hWnd; //파일 어디서든 쓸 수 있는 변수
+extern HINSTANCE g_hInstance;
 
 inline void RenderRectangle(HDC hdc, RECT rc, HBRUSH hBrush = NULL, HPEN hPen = NULL)
 {

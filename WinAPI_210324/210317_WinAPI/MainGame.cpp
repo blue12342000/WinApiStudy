@@ -1,5 +1,8 @@
 #include "MainGame.h"
 #include "SpecialBullet.h"
+#include "Image.h"
+#include "Iori.h"
+#include "Charactor.h"
 
 HRESULT MainGame::Init()
 {
@@ -15,6 +18,16 @@ HRESULT MainGame::Init()
 	//keyMgr.Init();
 	KeyManager::GetInstance()->Init();
 
+	backBuffer = new Image();
+	backBuffer->Init(WINSIZE_X, WINSIZE_Y);
+
+	imageBin = new Image();
+	imageBin->Init("Image/bgImage.bmp", WINSIZE_X, WINSIZE_Y);
+	
+	lasswellKing = new Charactor();
+	lasswellKing->Init();
+	lasswellKing->SetPos({WINSIZE_X / 2, WINSIZE_Y - 400});
+
 	IsInited = true;
 	return S_OK;
 }
@@ -26,34 +39,42 @@ void MainGame::Update()
 	{
 		tank.Move({ 0, -5 });
 	}
-	else if (KeyManager::GetInstance()->IsStayKeyDown('A'))
+	if (KeyManager::GetInstance()->IsStayKeyDown('A'))
 	{
 		tank.Move({ -5, 0 });
 	}
-	else if (KeyManager::GetInstance()->IsStayKeyDown('S'))
+	if (KeyManager::GetInstance()->IsStayKeyDown('S'))
 	{
 		tank.Move({ 0, 5 });
 	}
-	else if (KeyManager::GetInstance()->IsStayKeyDown('D'))
+	if (KeyManager::GetInstance()->IsStayKeyDown('D'))
 	{
 		tank.Move({ 5, 0 });
 	}
-	else if (KeyManager::GetInstance()->IsOnceKeyDown(VK_SPACE))
+	if (KeyManager::GetInstance()->IsOnceKeyDown(VK_SPACE))
 	{
 		tank.Fire();
 	}
-	else if (KeyManager::GetInstance()->IsOnceKeyDown('G'))
+	if (KeyManager::GetInstance()->IsOnceKeyDown('G'))
 	{
 		tank.FireGuide();
 	}
-	else if (KeyManager::GetInstance()->IsOnceKeyDown('F'))
+	if (KeyManager::GetInstance()->IsOnceKeyDown('F'))
 	{
 		tank.FireSpecial();
 	}
-	else if (KeyManager::GetInstance()->IsOnceKeyDown('H'))
+	if (KeyManager::GetInstance()->IsOnceKeyDown('H'))
 	{
 		tank.FireSignature();
 		tank.GetSpecialBullet()->SetTarget(&enemy[0]);
+	}
+	if (KeyManager::GetInstance()->IsStayKeyDown(VK_LEFT))
+	{
+		tank.RotateFire(-5);
+	}
+	if (KeyManager::GetInstance()->IsStayKeyDown(VK_RIGHT))
+	{
+		tank.RotateFire(5);
 	}
 
 	int bulletNum = tank.GetBulletNum();
@@ -120,29 +141,47 @@ void MainGame::Update()
 		}
 	}
 	tank.Update();
+	lasswellKing->Update();
+
+	InvalidateRect(g_hWnd, NULL, false);
 }
 
 void MainGame::Render(HDC hdc)
 {
-	tank.Render(hdc);
+	HDC hBackDC = backBuffer->GetMemoryDC();
+	imageBin->Render(hBackDC);
+	tank.Render(hBackDC);
 	for (int i = 0; i < enemyNum; ++i)
 	{
-		enemy[i].Render(hdc);
+		enemy[i].Render(hBackDC);
 	}
 	if (stage != GS_END)
 	{
 		string str = "STAGE " + to_string(stage);
-		TextOut(hdc, 10, 10, str.c_str(), str.length());
+		TextOut(hBackDC, 10, 10, str.c_str(), str.length());
 	}
 	else
 	{
 		string str = "STAGE END";
-		TextOut(hdc, 10, 10, str.c_str(), str.length());
+		TextOut(hBackDC, 10, 10, str.c_str(), str.length());
 	}
+
+	lasswellKing->Render(hBackDC);
+
+	backBuffer->Render(hdc);
 }
 
 void MainGame::Release()
 {
+	lasswellKing->Release();
+	delete lasswellKing;
+
+	imageBin->Release();
+	delete imageBin;
+
+	backBuffer->Release();
+	delete backBuffer;
+
 	tank.Release();
 	for (int i = 0; i < enemyNum; ++i)
 	{
@@ -255,50 +294,6 @@ LRESULT MainGame::MainWndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lP
 	{
 	case WM_CREATE:
 		break;
-	//case WM_KEYDOWN:
-	//	switch (wParam)
-	//	{
-	//	case 'w':
-	//	case 'W':
-	//		tank.Move({ 0, -5 });
-	//		break;
-	//	case 'a':
-	//	case 'A':
-	//		tank.Move({ -5, 0 });
-	//		break;
-	//	case 's':
-	//	case 'S':
-	//		tank.Move({ 0, 5 });
-	//		break;
-	//	case 'd':
-	//	case 'D':
-	//		tank.Move({ 5, 0 });
-	//		break;
-	//	case 'g':
-	//	case 'G':
-	//		tank.FireGuide();
-	//		break;
-	//	case 'f':
-	//	case 'F':
-	//		tank.FireSpecial();
-	//		break;
-	//	case 'h':
-	//	case 'H':
-	//		tank.FireSignature();
-	//		tank.GetSpecialBullet()->SetTarget(&enemy[0]);
-	//		break;
-	//	case VK_SPACE:
-	//		tank.Fire();
-	//		break;
-	//	case VK_LEFT:
-	//		tank.RotateFire(-5);
-	//		break;
-	//	case VK_RIGHT:
-	//		tank.RotateFire(+5);
-	//		break;
-	//	}
-	//	InvalidateRect(hWnd, NULL, true);
-	//	break;
 	case WM_PAINT:
 		hdc = BeginPaint(g_hWnd, &ps);
 		if (IsInited) Render(hdc);
@@ -306,7 +301,6 @@ LRESULT MainGame::MainWndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lP
 		break;
 	case WM_TIMER:
 		if (IsInited) Update();
-		InvalidateRect(hWnd, NULL, true);
 		break;
 	case WM_DESTROY:
 		Release();

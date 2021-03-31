@@ -22,12 +22,12 @@
     <Filter Include="소스 파일\유닛">
       <UniqueIdentifier>{281b014f-da43-456e-a887-e9f1680af3be}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\2D Framework">
+      <UniqueIdentifier>{f52c423d-8a2c-49ac-af37-a8e44991654a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="MainGame.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="ShotgunBullet.cpp">
@@ -49,16 +49,22 @@
       <Filter>소스 파일\탄환</Filter>
     </ClCompile>
     <ClCompile Include="KeyManager.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\2D Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame.cpp">
+      <Filter>소스 파일\2D Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Image.cpp">
+      <Filter>소스 파일\2D Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Iori.cpp">
+      <Filter>소스 파일\유닛</Filter>
+    </ClCompile>
+    <ClCompile Include="Charactor.cpp">
+      <Filter>소스 파일\유닛</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameNode.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="MainGame.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Main.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -83,11 +89,34 @@
     <ClInclude Include="SpecialBullet.h">
       <Filter>소스 파일\탄환</Filter>
     </ClInclude>
-    <ClInclude Include="KeyManager.h">
-      <Filter>헤더 파일</Filter>
+    <ClInclude Include="GameNode.h">
+      <Filter>소스 파일\2D Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame.h">
+      <Filter>소스 파일\2D Framework</Filter>
     </ClInclude>
     <ClInclude Include="Singleton.h">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\2D Framework</Filter>
     </ClInclude>
+    <ClInclude Include="KeyManager.h">
+      <Filter>소스 파일\2D Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Image.h">
+      <Filter>소스 파일\2D Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Iori.h">
+      <Filter>소스 파일\유닛</Filter>
+    </ClInclude>
+    <ClInclude Include="Charactor.h">
+      <Filter>소스 파일\유닛</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="210317_WinAPI.rc">
+      <Filter>리소스 파일</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

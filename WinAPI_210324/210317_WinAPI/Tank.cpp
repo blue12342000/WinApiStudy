@@ -6,7 +6,7 @@ HRESULT Tank::Init()
 	pos.x = 100;
 	pos.y = 200;
 
-	angle = -90;
+	angle = 270;
 
 	size = 100;
 	curr = 0;

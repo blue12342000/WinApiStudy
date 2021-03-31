@@ -1,5 +1,5 @@
 #include "Bullet.h"
-
+#include "Image.h"
 
 
 Bullet::Bullet()
@@ -13,6 +13,15 @@ Bullet::~Bullet()
 HRESULT Bullet::Init()
 {
 	isShoot = false;
+
+	if (!imageBullet)
+	{
+		imageBullet = new Image();
+		if (FAILED(imageBullet->Init("Image/bullet.bmp", 10, 10)))
+		{
+			imageBullet = nullptr;
+		}
+	}
 
 	return S_OK;
 }
@@ -34,11 +43,27 @@ void Bullet::Update()
 
 void Bullet::Render(HDC hdc)
 {
-	if (isShoot) Ellipse(hdc, rc.left, rc.top, rc.right, rc.bottom);
+	if (isShoot)
+	{
+		if (imageBullet)
+		{
+			imageBullet->Render(hdc, rc.left, rc.top);
+		}
+		else
+		{
+			Ellipse(hdc, rc.left, rc.top, rc.right, rc.bottom);
+		}
+	}
 }
 
 void Bullet::Release()
 {
+	if (imageBullet)
+	{
+		imageBullet->Release();
+		delete imageBullet;
+		imageBullet = nullptr;
+	}
 }
 
 void Bullet::Fire(POINTFLOAT pos, int size, float radian, float speed)

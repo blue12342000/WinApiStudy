@@ -3,8 +3,9 @@
 #include "GameNode.h"
 #include "Tank.h"
 #include "Enemy.h"
-#include "KeyManager.h"
 
+class Image;
+class Charactor;
 class MainGame : public GameNode
 {
 private:
@@ -14,6 +15,7 @@ private:
 	};
 
 	HDC hdc;
+	HDC bgdc;
 	PAINTSTRUCT ps;
 	HANDLE timer;
 
@@ -26,8 +28,10 @@ private:
 
 	GameStage stage = GS_END;
 
-	//KeyManager keyMgr;
+	Image* backBuffer;
+	Image* imageBin;
 
+	Charactor* lasswellKing;
 public:
 
 	HRESULT Init();
