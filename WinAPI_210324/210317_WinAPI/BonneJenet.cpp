@@ -9,11 +9,11 @@ HRESULT BonneJenet::Init()
 	fileName[(int)CharaterState::CS_IDLE] = "Image/The King of Fighters 11/Bonne Jenet/Bonne Jenet_idle_bmp.bmp";
 	fileName[(int)CharaterState::CS_MOVE] = "Image/The King of Fighters 11/Bonne Jenet/Bonne Jenet_move_bmp.bmp";
 	img = new Image[(int)CharaterState::CS_END];
-	if (FAILED(img[(int)CharaterState::CS_IDLE].Init(fileName[(int)CharaterState::CS_IDLE], width * 16, height, 16, 1)))
+	if (FAILED(img[(int)CharaterState::CS_IDLE].Init(fileName[(int)CharaterState::CS_IDLE], width * 16, height, 16, 1, 16, true, RGB(255, 255, 255))))
 	{
 		MessageBox(g_hWnd, "IDLE 캐릭터이미지 로드에 실패하였습니다.", "Error", MB_OK);
 	}
-	if (FAILED(img[(int)CharaterState::CS_MOVE].Init(fileName[(int)CharaterState::CS_MOVE], width * 14, height, 14, 1)))
+	if (FAILED(img[(int)CharaterState::CS_MOVE].Init(fileName[(int)CharaterState::CS_MOVE], width * 14, height, 14, 1, 14, true, RGB(255, 255, 255))))
 	{
 		MessageBox(g_hWnd, "MOVE 캐릭터이미지 로드에 실패하였습니다.", "Error", MB_OK);
 	}

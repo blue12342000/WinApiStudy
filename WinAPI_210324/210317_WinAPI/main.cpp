@@ -10,6 +10,7 @@ LPSTR g_lpszClass = (LPSTR)TEXT("윈메인의 시작");
 MainGame g_mainGame;
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam);
+void SetClientRect(HWND, int, int);
 
 int APIENTRY WinMain(HINSTANCE _hInstance, HINSTANCE _hPrevInstance, LPSTR _lpszCmdParam, int nCmdShow)
 {
@@ -36,6 +37,7 @@ int APIENTRY WinMain(HINSTANCE _hInstance, HINSTANCE _hPrevInstance, LPSTR _lpsz
 
 	// 윈도우 출력
 	ShowWindow(g_hWnd, nCmdShow);
+	SetClientRect(g_hWnd, WINSIZE_X, WINSIZE_Y);
 
 	if (FAILED(g_mainGame.Init()))
 	{
@@ -55,4 +57,20 @@ int APIENTRY WinMain(HINSTANCE _hInstance, HINSTANCE _hPrevInstance, LPSTR _lpsz
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
 	return g_mainGame.MainWndProc(hWnd, iMessage, wParam, lParam);
+}
+
+void SetClientRect(HWND hWnd, int width, int height)
+{
+	RECT clientRect;
+	DWORD style, exStyle;
+
+	SetRect(&clientRect, 0, 0, width, height);
+	style = GetWindowLong(hWnd, GWL_STYLE);
+	exStyle = GetWindowLong(hWnd, GWL_EXSTYLE);
+
+	AdjustWindowRectEx(&clientRect, style, GetMenu(hWnd) != NULL, exStyle);
+	if (style & WS_VSCROLL) clientRect.right += GetSystemMetrics(SM_CXVSCROLL);
+	if (style & WS_HSCROLL) clientRect.bottom += GetSystemMetrics(SM_CYVSCROLL);
+
+	SetWindowPos(hWnd, NULL, 0, 0, clientRect.right - clientRect.left, clientRect.bottom - clientRect.top, SWP_NOMOVE | SWP_NOZORDER);
 }

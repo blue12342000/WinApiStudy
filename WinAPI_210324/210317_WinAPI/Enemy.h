@@ -2,6 +2,7 @@
 #include "GameNode.h"
 #include "Config.h"
 
+class Image;
 class Tank;
 class Enemy : public GameNode
 {
@@ -19,6 +20,7 @@ public:
 	};
 
 private:
+	Image* image;
 	EnemyState state = Enemy::EnemyState::ALIVE;
 	EnemyMove move = EnemyMove::EM_LEFT;
 	POINTFLOAT pos;
@@ -33,6 +35,9 @@ private:
 
 	HBRUSH hBrushBlack = NULL;
 	HBRUSH hBrushRed = NULL;
+
+	int elapsedTime;
+	int frame;
 
 public:
 	Enemy() {}

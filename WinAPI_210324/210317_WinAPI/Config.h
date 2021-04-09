@@ -4,8 +4,8 @@
 
 #include <Windows.h>
 //매크로로 문자로 정의
-#define WINSIZE_X 1080
-#define WINSIZE_Y 720
+#define WINSIZE_X 600
+#define WINSIZE_Y 800
 #include <string>
 #include <ctime>
 #include <cmath>

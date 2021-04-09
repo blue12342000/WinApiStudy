@@ -11,7 +11,7 @@ HRESULT MainGame::Init()
 	srand(time(NULL));
 
 	tank.Init();
-	tank.SetPoint({ WINSIZE_X / 2, WINSIZE_Y - 100 });
+	tank.SetPoint({ WINSIZE_X / 2, WINSIZE_Y });
 	
 	stage = GS_ONE;
 	CreateEnemy(stage);
@@ -23,7 +23,7 @@ HRESULT MainGame::Init()
 	backBuffer->Init(WINSIZE_X, WINSIZE_Y);
 
 	imageBin = new Image();
-	imageBin->Init("Image/bgImage.bmp", WINSIZE_X, WINSIZE_Y);
+	imageBin->Init("Image/background.bmp", WINSIZE_X, WINSIZE_Y);
 	
 	bonneJenet = new BonneJenet();
 	bonneJenet->Init();

@@ -29,6 +29,8 @@ public:
 		// 이미지 로드 방식
 		IMAGE_LOAD_TYPE loadType;
 
+		COLORREF transColor;
+
 		ImageInfo()
 		{
 			resourceId = 0;
@@ -38,11 +40,15 @@ public:
 			width = 0;
 			height = 0;
 			loadType = IMAGE_LOAD_TYPE::ILT_END;
+
+			transColor = RGB(0, 0, 0);
+			
 		}
 	} ImageInfo, *LPImageInfo;
 
 private:
 	LPImageInfo lpImageInfo;
+	bool isTrans;
 	int frameX;
 	int frameY;
 	int totalFrames;
@@ -54,6 +60,9 @@ public:
 	// 파일로부터 이미지를 로드하는 함수
 	HRESULT Init(std::string filename, int width, int height, int frameX = 1, int frameY = 1);
 	HRESULT Init(std::string filename, int width, int height, int frameX, int frameY, int totalFrames);
+
+	HRESULT Init(std::string filename, int width, int height, int frameX, int frameY, int totalFrames, bool isTrans, COLORREF transColor);
+
 	void Update() {}
 
 	// 화면에 출력

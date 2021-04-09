@@ -21,6 +21,9 @@ HRESULT Image::Init(int width, int height)
 		return E_FAIL;
 	}
 
+	this->isTrans = false;
+	this->lpImageInfo->transColor = RGB(0, 0, 0);
+
 	return S_OK;
 }
 
@@ -49,6 +52,9 @@ HRESULT Image::Init(std::string filename, int width, int height, int frameX, int
 		return E_FAIL;
 	}
 
+	this->isTrans = false;
+	this->lpImageInfo->transColor = RGB(0, 0, 0);
+
 	return S_OK;
 }
 
@@ -59,6 +65,20 @@ HRESULT Image::Init(std::string filename, int width, int height, int frameX, int
 		return E_FAIL;
 	}
 	this->totalFrames = totalFrames;
+	this->isTrans = false;
+	this->lpImageInfo->transColor = RGB(0, 0, 0);
+	return S_OK;
+}
+
+HRESULT Image::Init(std::string filename, int width, int height, int frameX, int frameY, int totalFrames, bool isTrans, COLORREF transColor)
+{
+	if (FAILED(Init(filename, width, height, frameX, frameY)))
+	{
+		return E_FAIL;
+	}
+	this->totalFrames = totalFrames;
+	this->isTrans = isTrans;
+	this->lpImageInfo->transColor = transColor;
 	return S_OK;
 }
 
@@ -66,7 +86,14 @@ void Image::Render(HDC hdc, int startX, int startY, int drawWidth, int drawHeigh
 {
 	if (lpImageInfo)
 	{
-		BitBlt(hdc, startX, startY, (drawWidth < 0) ? lpImageInfo->width : drawWidth, (drawHeight < 0) ? lpImageInfo->height : drawHeight, lpImageInfo->hMemoryDC, (drawStartX < 0) ? 0 : drawStartX, (drawStartY < 0) ? 0 : drawStartY, SRCCOPY);
+		if (isTrans)
+		{
+			GdiTransparentBlt(hdc, startX, startY, lpImageInfo->width, lpImageInfo->height, lpImageInfo->hMemoryDC, 0, 0, lpImageInfo->width, lpImageInfo->height, lpImageInfo->transColor);
+		}
+		else
+		{
+			BitBlt(hdc, startX, startY, (drawWidth < 0) ? lpImageInfo->width : drawWidth, (drawHeight < 0) ? lpImageInfo->height : drawHeight, lpImageInfo->hMemoryDC, (drawStartX < 0) ? 0 : drawStartX, (drawStartY < 0) ? 0 : drawStartY, SRCCOPY);
+		}
 	}
 }
 
@@ -75,7 +102,17 @@ void Image::RenderFrame(HDC hdc, int startX, int startY, int frameIndex)
 	if (lpImageInfo)
 	{
 		frameIndex %= totalFrames;
-		BitBlt(hdc, startX, startY, lpImageInfo->width, lpImageInfo->height, lpImageInfo->hMemoryDC, lpImageInfo->width * (frameIndex % frameX), lpImageInfo->height * (frameIndex / frameX), SRCCOPY);
+		startX -= lpImageInfo->width / 2;
+		startY -= lpImageInfo->height / 2;
+
+		if (isTrans)
+		{
+			GdiTransparentBlt(hdc, startX, startY, lpImageInfo->width, lpImageInfo->height, lpImageInfo->hMemoryDC, lpImageInfo->width * (frameIndex % frameX), lpImageInfo->height * (frameIndex / frameX), lpImageInfo->width, lpImageInfo->height, lpImageInfo->transColor);
+		}
+		else
+		{
+			BitBlt(hdc, startX, startY, lpImageInfo->width, lpImageInfo->height, lpImageInfo->hMemoryDC, lpImageInfo->width * (frameIndex % frameX), lpImageInfo->height * (frameIndex / frameX), SRCCOPY);
+		}
 	}
 }
 
