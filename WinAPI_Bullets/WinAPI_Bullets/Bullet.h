@@ -6,6 +6,7 @@ enum class BULLET_TYPE
 	BASIC,
 	SPIRAL,
 	HALLUCINATION,
+	DELAYED,
 	NONE
 };
 
@@ -31,7 +32,7 @@ protected:
 	RECT rect;
 
 	Image* image = nullptr;
-	int delayTimer;
+	float delayTimer;
 
 public:
 	virtual void Init();
@@ -39,7 +40,7 @@ public:
 	virtual void Update();
 	virtual void Render(HDC hdc);
 
-	virtual void Fire(POINTFLOAT pos, float speed, float angle, int delay = 0);
+	virtual void Fire(POINTFLOAT pos, float speed, float angle, float delay = 0);
 
 	inline bool IsActive() { return state != BULLET_STATE::DEACTIVE; }
 	inline BULLET_TYPE GetType() { return type; }

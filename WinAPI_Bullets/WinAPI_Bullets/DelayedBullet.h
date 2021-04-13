@@ -1,10 +1,11 @@
 #pragma once
 #include "Bullet.h"
 
-class SpiralBullet : public Bullet
+class DelayedBullet : public Bullet
 {
 private:
-	float destAngle;
+	float elapsedTime;
+	bool isReTarget;
 
 public:
 	void Init();

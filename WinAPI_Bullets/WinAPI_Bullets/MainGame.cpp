@@ -8,8 +8,9 @@ HRESULT MainGame::Init()
 	srand(time(NULL));
 	
 	KeyManager::GetInstance()->Init();
+	ImageManager::GetInstance()->Init();
 
-	hTimer = (HWND)SetTimer(g_hWnd, NULL, 10, NULL);
+	//hTimer = (HWND)SetTimer(g_hWnd, NULL, 10, NULL);
 
 	backBuffer = new Image();
 	if (FAILED(backBuffer->Init(WINSIZE_WIDTH, WINSIZE_HEIGHT)))
@@ -26,6 +27,8 @@ HRESULT MainGame::Init()
 		background = nullptr;
 		return E_FAIL;
 	}
+
+	hdc = GetDC(g_hWnd);
 
 	isInitalize = true;
 	return S_OK;
@@ -50,6 +53,10 @@ void MainGame::Release()
 	enemyManager.Release();
 
 	KeyManager::GetInstance()->ReleaseSingleton();
+	ImageManager::GetInstance()->Release();
+	ImageManager::GetInstance()->ReleaseSingleton();
+
+	ReleaseDC(g_hWnd, hdc);
 }
 
 void MainGame::Update()
@@ -58,13 +65,15 @@ void MainGame::Update()
 	InvalidateRect(g_hWnd, NULL, false);
 }
 
-void MainGame::Render(HDC hdc)
+void MainGame::Render()
 {
 	HDC hBackDC = backBuffer->GetMemoryDC();
 
 	background->Render(hBackDC);
 	enemyManager.Render(hBackDC);
 
+	// Timer FPS
+	TimerManager::GetInstance()->Render(hBackDC);
 	backBuffer->Render(hdc);
 }
 
@@ -72,6 +81,10 @@ LRESULT MainGame::WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam
 {
 	switch (iMessage)
 	{
+	case WM_MOUSEMOVE:
+		g_mouse.x = (float)(LOWORD(lParam));
+		g_mouse.y = (float)(HIWORD(lParam));
+		break;
 	case WM_LBUTTONDOWN:
 		enemyManager.CreateEnemy(LOWORD(lParam), HIWORD(lParam));
 		break;
@@ -79,15 +92,10 @@ LRESULT MainGame::WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam
 		enemyManager.Fire(4.5f, 3.141582f * ((float)(rand() % 360) / 180));
 		break;
 	case WM_TIMER:
-		if (isInitalize) Update();
 		break;
 	case WM_PAINT:
-		hdc = BeginPaint(g_hWnd, &ps);
-		if (isInitalize) Render(hdc);
-		EndPaint(g_hWnd, &ps);
 		break;
 	case WM_DESTROY:
-		KillTimer(g_hWnd, 0);
 		PostQuitMessage(0);
 		break;
 	}

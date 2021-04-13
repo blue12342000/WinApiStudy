@@ -20,5 +20,6 @@ public:
 	void SpiralFire(float speed, bool rotateRight);
 	void HalluFire(float speed, float angle);
 	void HalluSprialFire(float speed, float angle);
+	void DelayedFire(float speed);
 };
 

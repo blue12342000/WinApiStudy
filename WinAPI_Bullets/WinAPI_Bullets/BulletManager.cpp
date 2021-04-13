@@ -3,6 +3,7 @@
 #include "Bullet.h"
 #include "SpiralBullet.h"
 #include "HallucinationBullet.h"
+#include "DelayedBullet.h"
 
 void BulletManager::Init()
 {
@@ -10,6 +11,7 @@ void BulletManager::Init()
 	mvDeacive.insert(make_pair(BULLET_TYPE::BASIC, vector<Bullet*>(vBullets)));
 	mvDeacive.insert(make_pair(BULLET_TYPE::SPIRAL, vector<Bullet*>(vBullets)));
 	mvDeacive.insert(make_pair(BULLET_TYPE::HALLUCINATION, vector<Bullet*>(vBullets)));
+	mvDeacive.insert(make_pair(BULLET_TYPE::DELAYED, vector<Bullet*>(vBullets)));
 }
 
 void BulletManager::Release()
@@ -79,8 +81,8 @@ void BulletManager::SpreadFire(POINTFLOAT pos, float angle, int delay)
 			vBullets.push_back(vDeactive[vDeactive.size() - 1]);
 			vDeactive.pop_back();
 		}
-		if (delay > 0) vBullets[vBullets.size() - 1]->Fire(pos, (float)(rand() % 30) / 10.0f + 1.5f, angle + (float)((rand() % 101) - 50) / 100.0f, delay);
-		else vBullets[vBullets.size() - 1]->Fire(pos, (float)(rand() % 30) / 10.0f + 1.5f, angle + (float)((rand() % 101) - 50) / 100.0f);
+		if (delay > 0) vBullets[vBullets.size() - 1]->Fire(pos, (float)(rand() % 200) + 200, angle + (float)((rand() % 101) - 50) / 100.0f, delay);
+		else vBullets[vBullets.size() - 1]->Fire(pos, (float)(rand() % 200) + 200, angle + (float)((rand() % 101) - 50) / 100.0f);
 	}
 }
 
@@ -99,8 +101,8 @@ void BulletManager::RoundFire(POINTFLOAT pos, float speed, int delay)
 			vBullets.push_back(vDeactive[vDeactive.size() - 1]);
 			vDeactive.pop_back();
 		}
-		if (delay > 0) vBullets[vBullets.size() - 1]->Fire(pos, speed, 3.141582f * ((float)i / 180), delay);
-		else vBullets[vBullets.size() - 1]->Fire(pos, speed, 3.141582f * ((float)i / 180));
+		if (delay > 0) vBullets[vBullets.size() - 1]->Fire(pos, speed, PI * ((float)i / 180), delay);
+		else vBullets[vBullets.size() - 1]->Fire(pos, speed, PI * ((float)i / 180));
 	}
 }
 
@@ -121,8 +123,8 @@ void BulletManager::SpiralFire(POINTFLOAT pos, float speed, bool rightRotate, in
 				vBullets.push_back(vDeactive[vDeactive.size() - 1]);
 				vDeactive.pop_back();
 			}
-			if (delay > 0) vBullets[vBullets.size() - 1]->Fire(pos, speed, 3.141582f * ((float)i / 180), delay);
-			else vBullets[vBullets.size() - 1]->Fire(pos, speed, 3.141582f * ((float)i / 180));
+			if (delay > 0) vBullets[vBullets.size() - 1]->Fire(pos, speed, PI * ((float)i / 180), delay);
+			else vBullets[vBullets.size() - 1]->Fire(pos, speed, PI * ((float)i / 180));
 		}
 		else
 		{
@@ -137,8 +139,8 @@ void BulletManager::SpiralFire(POINTFLOAT pos, float speed, bool rightRotate, in
 				vBullets.push_back(vDeactive[vDeactive.size() - 1]);
 				vDeactive.pop_back();
 			}
-			if (delay > 0) vBullets[vBullets.size() - 1]->Fire(pos, speed, -3.141582f * ((float)i / 180) - 0.000001f, delay);
-			else vBullets[vBullets.size() - 1]->Fire(pos, speed, -3.141582f * ((float)i / 180) - 0.000001f);
+			if (delay > 0) vBullets[vBullets.size() - 1]->Fire(pos, speed, -PI * ((float)i / 180) - 0.000001f, delay);
+			else vBullets[vBullets.size() - 1]->Fire(pos, speed, -PI * ((float)i / 180) - 0.000001f);
 		}
 	}
 }
@@ -179,4 +181,42 @@ void BulletManager::HalluSprialFire(POINTFLOAT pos, float speed, float angle, in
 	((HallucinationBullet*)vBullets[vBullets.size() - 1])->SetBulletManager(this);
 	if (delay > 0) vBullets[vBullets.size() - 1]->Fire(pos, speed, angle, delay);
 	else vBullets[vBullets.size() - 1]->Fire(pos, speed, angle);
+}
+
+void BulletManager::SpiralDelayedFire(POINTFLOAT pos, float speed, float angle, int delay)
+{
+	for (int i = 0; i < 360; i += 10)
+	{
+		if (mvDeacive[BULLET_TYPE::DELAYED].empty())
+		{
+			vBullets.push_back(new DelayedBullet());
+			vBullets[vBullets.size() - 1]->Init();
+		}
+		else
+		{
+			vector<Bullet*>& vDeactive = mvDeacive[BULLET_TYPE::DELAYED];
+			vBullets.push_back(vDeactive[vDeactive.size() - 1]);
+			vDeactive.pop_back();
+		}
+		vBullets[vBullets.size() - 1]->Fire(pos, speed, PI * ((float)i / 180));
+	}
+}
+
+void BulletManager::DelayedFire(POINTFLOAT pos, float speed, float angle, int delay)
+{
+	for (int i = 0; i < 360; i += 10)
+	{
+		if (mvDeacive[BULLET_TYPE::DELAYED].empty())
+		{
+			vBullets.push_back(new DelayedBullet());
+			vBullets[vBullets.size() - 1]->Init();
+		}
+		else
+		{
+			vector<Bullet*>& vDeactive = mvDeacive[BULLET_TYPE::DELAYED];
+			vBullets.push_back(vDeactive[vDeactive.size() - 1]);
+			vDeactive.pop_back();
+		}
+		vBullets[vBullets.size() - 1]->Fire(pos, speed, PI * ((float)i / 180), 0.01f * (i % 90));
+	}
 }

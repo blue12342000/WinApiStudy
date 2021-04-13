@@ -21,24 +21,28 @@ void EnemyManager::Update()
 {
 	if (KeyManager::GetInstance()->IsOnceKeyDown('Q'))
 	{
-		SpreadFire(3.141582f * ((float)(rand() % 360) / 180));
+		SpreadFire(PI * ((float)(rand() % 360) / 180));
 	}
 	if (KeyManager::GetInstance()->IsOnceKeyDown('W'))
 	{
-		RoundFire(4);
+		RoundFire(400);
 	}
 	if (KeyManager::GetInstance()->IsOnceKeyDown('E'))
 	{
-		SpiralFire(4, false);
-		SpiralFire(3, true);
+		SpiralFire(400, false);
+		SpiralFire(300, true);
 	}
 	if (KeyManager::GetInstance()->IsOnceKeyDown('R'))
 	{
-		HalluFire(4, 3.141582f * ((float)(rand() % 360) / 180));
+		HalluFire(400, PI * ((float)(rand() % 360) / 180));
 	}
 	if (KeyManager::GetInstance()->IsOnceKeyDown('T'))
 	{
-		HalluSprialFire(4, 3.141582f * ((float)(rand() % 360) / 180));
+		HalluSprialFire(400, PI * ((float)(rand() % 360) / 180));
+	}
+	if (KeyManager::GetInstance()->IsOnceKeyDown('Y'))
+	{
+		DelayedFire(200);
 	}
 
 	for (int i = 0; i < vEnemys.size(); ++i)
@@ -107,5 +111,13 @@ void EnemyManager::HalluSprialFire(float speed, float angle)
 	for (int i = 0; i < vEnemys.size(); ++i)
 	{
 		vEnemys[i]->HalluSprialFire(speed, angle);
+	}
+}
+
+void EnemyManager::DelayedFire(float speed)
+{
+	for (int i = 0; i < vEnemys.size(); ++i)
+	{
+		vEnemys[i]->DelayedFire(speed);
 	}
 }

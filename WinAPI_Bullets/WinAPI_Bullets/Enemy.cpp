@@ -4,13 +4,7 @@
 
 void Enemy::Init()
 {
-	image = new Image();
-	if (FAILED(image->Init("Image/ufo.bmp", 530, 32, 10, 1, 10, true)))
-	{
-		MessageBox(g_hWnd, "적 이미지 로드 실패", "적 로드 실패", MB_OK);
-		delete image;
-		image = nullptr;
-	}
+	image = ImageManager::GetInstance()->FindImage("ENEMY");
 
 	pos = {0, 0};
 	width = 53;
@@ -25,13 +19,6 @@ void Enemy::Init()
 
 void Enemy::Release()
 {
-	if (image)
-	{
-		image->Release();
-		delete image;
-		image = nullptr;
-	}
-
 	bulletManager.Release();
 }
 
@@ -84,5 +71,10 @@ void Enemy::HalluFire(float speed, float angle)
 void Enemy::HalluSprialFire(float speed, float angle)
 {
 	bulletManager.HalluSprialFire(pos, speed, angle);
+}
+
+void Enemy::DelayedFire(float speed)
+{
+	bulletManager.DelayedFire(pos, speed, 0);
 }
 

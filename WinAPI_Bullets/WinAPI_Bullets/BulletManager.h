@@ -22,5 +22,8 @@ public:
 	void SpiralFire(POINTFLOAT pos, float speed, bool rightRotate = false, int delay = 0);
 	void HalluFire(POINTFLOAT pos, float speed, float angle, int delay = 0);
 	void HalluSprialFire(POINTFLOAT pos, float speed, float angle, int delay = 0);
+
+	void DelayedFire(POINTFLOAT pos, float speed, float angle, int delay = 0);
+	void SpiralDelayedFire(POINTFLOAT pos, float speed, float angle, int delay = 0);
 };
 

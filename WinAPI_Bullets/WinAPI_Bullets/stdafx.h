@@ -10,15 +10,22 @@
 #define WINSIZE_WIDTH 600
 #define WINSIZE_HEIGHT 800
 
+#define PI 3.141592f
 #define U_GR_CENTER 0x01
+
+#define SAFE_DELETE(p) { if (p) {delete p; p = nullptr;} }
+#define SAFE_RELEASE(p) { if (p) {p->Release(); delete p; p = nullptr;} }
 
 extern HINSTANCE g_hInstance;
 extern HWND g_hWnd;
 extern bool isDebugMode;
+extern POINTFLOAT g_mouse;
 
 using namespace std;
 
 #include "KeyManager.h"
+#include "ImageManager.h"
+#include "TimerManager.h"
 
 inline RECT GetRect(POINTFLOAT pos, int width, int height, UINT uFlag)
 {

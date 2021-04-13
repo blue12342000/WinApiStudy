@@ -7,8 +7,6 @@ class MainGame
 private:
 	bool isInitalize = false;
 	HDC hdc;
-	PAINTSTRUCT ps;
-	HWND hTimer;
 
 	Image* backBuffer;
 	Image* background;
@@ -19,7 +17,7 @@ public:
 	HRESULT Init();
 	void Release();
 	void Update();
-	void Render(HDC hdc);
+	void Render();
 
 	LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam);
 };

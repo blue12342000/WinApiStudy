@@ -15,6 +15,7 @@ private:
 	int frame;
 	int elapsedTime;
 
+	float fireAngle;
 	BulletManager bulletManager;
 
 public:
@@ -32,5 +33,7 @@ public:
 	void SpiralFire(float speed, bool rotateRight);
 	void HalluFire(float speed, float angle);
 	void HalluSprialFire(float speed, float angle);
+
+	void DelayedFire(float speed);
 };
 

@@ -6,6 +6,7 @@ HWND g_hWnd;
 LPSTR g_lpszClass = (LPSTR)TEXT("vector를 이용한 여러 탄환 패턴");
 MainGame g_mainGame;
 bool isDebugMode = true;
+POINTFLOAT g_mouse = { 0, 0 };
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam);
 void SetWindowSize(HWND hWnd, int x, int y, int width, int height);
@@ -38,11 +39,23 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		return 0;
 	}
 
+	TimerManager::GetInstance()->Init();
+
 	MSG message;
-	while (GetMessage(&message, 0, 0, 0))
+	while (true)
 	{
-		TranslateMessage(&message);
-		DispatchMessage(&message);
+		if (PeekMessage(&message, g_hWnd, 0, 0, PM_REMOVE))
+		{
+			if (message.message == WM_QUIT) break;
+			TranslateMessage(&message);
+			DispatchMessage(&message);
+		}
+		else
+		{
+			TimerManager::GetInstance()->Update();
+			g_mainGame.Update();
+			g_mainGame.Render();
+		}
 	}
 	g_mainGame.Release();
 

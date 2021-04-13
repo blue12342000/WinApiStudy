@@ -28,6 +28,9 @@
     <Filter Include="소스 파일\Bullet\Manager">
       <UniqueIdentifier>{8fe2bcaf-42ae-42b6-a137-a78d69d24021}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Engine\Timer">
+      <UniqueIdentifier>{a87fed0d-19e9-4bfd-b6cf-545da4f104ff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -61,6 +64,18 @@
       <Filter>소스 파일\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="HallucinationBullet.cpp">
+      <Filter>소스 파일\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageManager.cpp">
+      <Filter>소스 파일\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>소스 파일\Engine\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="TimerManager.cpp">
+      <Filter>소스 파일\Engine\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="DelayedBullet.cpp">
       <Filter>소스 파일\Bullet</Filter>
     </ClCompile>
   </ItemGroup>
@@ -99,6 +114,18 @@
       <Filter>소스 파일\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="HallucinationBullet.h">
+      <Filter>소스 파일\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageManager.h">
+      <Filter>소스 파일\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>소스 파일\Engine\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="TimerManager.h">
+      <Filter>소스 파일\Engine\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="DelayedBullet.h">
       <Filter>소스 파일\Bullet</Filter>
     </ClInclude>
   </ItemGroup>
