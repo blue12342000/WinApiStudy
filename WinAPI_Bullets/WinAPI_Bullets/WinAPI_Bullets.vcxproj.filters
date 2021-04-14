@@ -66,8 +66,8 @@
     <ClCompile Include="HallucinationBullet.cpp">
       <Filter>소스 파일\Bullet</Filter>
     </ClCompile>
-    <ClCompile Include="ImageManager.cpp">
-      <Filter>소스 파일\Engine</Filter>
+    <ClCompile Include="DelayedBullet.cpp">
+      <Filter>소스 파일\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="Timer.cpp">
       <Filter>소스 파일\Engine\Timer</Filter>
@@ -75,8 +75,8 @@
     <ClCompile Include="TimerManager.cpp">
       <Filter>소스 파일\Engine\Timer</Filter>
     </ClCompile>
-    <ClCompile Include="DelayedBullet.cpp">
-      <Filter>소스 파일\Bullet</Filter>
+    <ClCompile Include="ImageManager.cpp">
+      <Filter>소스 파일\Engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -116,8 +116,8 @@
     <ClInclude Include="HallucinationBullet.h">
       <Filter>소스 파일\Bullet</Filter>
     </ClInclude>
-    <ClInclude Include="ImageManager.h">
-      <Filter>소스 파일\Engine</Filter>
+    <ClInclude Include="DelayedBullet.h">
+      <Filter>소스 파일\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>소스 파일\Engine\Timer</Filter>
@@ -125,8 +125,8 @@
     <ClInclude Include="TimerManager.h">
       <Filter>소스 파일\Engine\Timer</Filter>
     </ClInclude>
-    <ClInclude Include="DelayedBullet.h">
-      <Filter>소스 파일\Bullet</Filter>
+    <ClInclude Include="ImageManager.h">
+      <Filter>소스 파일\Engine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
