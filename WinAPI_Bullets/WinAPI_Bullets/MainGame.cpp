@@ -2,6 +2,7 @@
 #include "MainGame.h"
 #include "Image.h"
 #include "Enemy.h"
+#include "SpaceShip.h"
 
 HRESULT MainGame::Init()
 {
@@ -30,6 +31,10 @@ HRESULT MainGame::Init()
 
 	hdc = GetDC(g_hWnd);
 
+	spaceShip = new SpaceShip();
+	spaceShip->Init();
+	spaceShip->SetPos({WINSIZE_WIDTH / 2, WINSIZE_HEIGHT / 2});
+
 	isInitalize = true;
 	return S_OK;
 }
@@ -50,6 +55,8 @@ void MainGame::Release()
 		background = nullptr;
 	}
 
+	SAFE_RELEASE(spaceShip);
+
 	enemyManager.Release();
 
 	KeyManager::GetInstance()->ReleaseSingleton();
@@ -62,7 +69,7 @@ void MainGame::Release()
 void MainGame::Update()
 {
 	enemyManager.Update();
-	InvalidateRect(g_hWnd, NULL, false);
+	spaceShip->Update();
 }
 
 void MainGame::Render()
@@ -71,6 +78,7 @@ void MainGame::Render()
 
 	background->Render(hBackDC);
 	enemyManager.Render(hBackDC);
+	spaceShip->Render(hBackDC);
 
 	// Timer FPS
 	TimerManager::GetInstance()->Render(hBackDC);

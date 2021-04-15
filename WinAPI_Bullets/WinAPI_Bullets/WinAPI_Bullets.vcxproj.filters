@@ -16,12 +16,6 @@
     <Filter Include="소스 파일\Engine">
       <UniqueIdentifier>{13309254-a278-41fc-8388-1a2c96e4a28f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\Enemy">
-      <UniqueIdentifier>{7a1eaf41-d3a6-464a-8baf-c7c10423d3bd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\Enemy\Manager">
-      <UniqueIdentifier>{d8b9a736-b9b7-4d03-a824-6d0c47cf21e8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\Bullet">
       <UniqueIdentifier>{146dd583-f7b4-40e2-986e-322832c232fa}</UniqueIdentifier>
     </Filter>
@@ -30,6 +24,12 @@
     </Filter>
     <Filter Include="소스 파일\Engine\Timer">
       <UniqueIdentifier>{a87fed0d-19e9-4bfd-b6cf-545da4f104ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Unit">
+      <UniqueIdentifier>{7a1eaf41-d3a6-464a-8baf-c7c10423d3bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Unit\Manager">
+      <UniqueIdentifier>{d8b9a736-b9b7-4d03-a824-6d0c47cf21e8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -46,10 +46,10 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
-      <Filter>소스 파일\Enemy</Filter>
+      <Filter>소스 파일\Unit</Filter>
     </ClCompile>
     <ClCompile Include="EnemyManager.cpp">
-      <Filter>소스 파일\Enemy\Manager</Filter>
+      <Filter>소스 파일\Unit\Manager</Filter>
     </ClCompile>
     <ClCompile Include="KeyManager.cpp">
       <Filter>소스 파일\Engine</Filter>
@@ -78,6 +78,9 @@
     <ClCompile Include="ImageManager.cpp">
       <Filter>소스 파일\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="SpaceShip.cpp">
+      <Filter>소스 파일\Unit</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -96,10 +99,10 @@
       <Filter>소스 파일</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
-      <Filter>소스 파일\Enemy</Filter>
+      <Filter>소스 파일\Unit</Filter>
     </ClInclude>
     <ClInclude Include="EnemyManager.h">
-      <Filter>소스 파일\Enemy\Manager</Filter>
+      <Filter>소스 파일\Unit\Manager</Filter>
     </ClInclude>
     <ClInclude Include="KeyManager.h">
       <Filter>소스 파일\Engine</Filter>
@@ -127,6 +130,9 @@
     </ClInclude>
     <ClInclude Include="ImageManager.h">
       <Filter>소스 파일\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SpaceShip.h">
+      <Filter>소스 파일\Unit</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

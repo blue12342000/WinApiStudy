@@ -13,6 +13,12 @@
 #define PI 3.141592f
 #define U_GR_CENTER 0x01
 
+#define U_EF_NONE 0x00
+#define U_EF_MOSAIC 0x01
+#define U_EF_BLUR 0x02
+#define U_EF_BLACKHOLE 0x04
+#define U_EF_PUZZLE 0x08
+
 #define SAFE_DELETE(p) { if (p) {delete p; p = nullptr;} }
 #define SAFE_RELEASE(p) { if (p) {p->Release(); delete p; p = nullptr;} }
 

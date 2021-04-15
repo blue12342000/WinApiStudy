@@ -2,6 +2,7 @@
 #include "EnemyManager.h"
 
 class Image;
+class SpaceShip;
 class MainGame
 {
 private:
@@ -12,6 +13,8 @@ private:
 	Image* background;
 
 	EnemyManager enemyManager;
+
+	SpaceShip* spaceShip;
 
 public:
 	HRESULT Init();

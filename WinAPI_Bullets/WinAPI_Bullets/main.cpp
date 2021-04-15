@@ -44,7 +44,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	MSG message;
 	while (true)
 	{
-		if (PeekMessage(&message, g_hWnd, 0, 0, PM_REMOVE))
+		if (PeekMessage(&message, 0, 0, 0, PM_REMOVE))
 		{
 			if (message.message == WM_QUIT) break;
 			TranslateMessage(&message);
