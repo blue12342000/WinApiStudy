@@ -28,7 +28,9 @@ private:
 	// 메인타일의 정보
 	TILE_INFO tileInfo[TILE_X * TILE_Y];
 
-	POINT selectTile;
+	bool isDrag;
+	POINT selectStartTile;
+	POINT selectEndTile;
 
 public:
 	virtual HRESULT Init();

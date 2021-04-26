@@ -26,6 +26,10 @@ HRESULT TilemapTool::Init()
         }
     }
 
+    isDrag = false;
+    selectStartTile = { 0, 0 };
+    selectEndTile = { 0, 0 };
+
     return S_OK;
 }
 
@@ -35,23 +39,69 @@ void TilemapTool::Release()
 
 void TilemapTool::Update()
 {
-    if (KeyManager::GetSingleton()->IsStayKeyDown(VK_LBUTTON))
+    if (KeyManager::GetSingleton()->IsOnceKeyUp(VK_LBUTTON))
+    {
+        isDrag = false;
+    }
+    else if (KeyManager::GetSingleton()->IsStayKeyDown(VK_LBUTTON))
     {
         POINT mousePoint = KeyManager::GetSingleton()->GetMousePoint();
         if (mousePoint.x > TILEMAPTOOLSIZE_X - sampleTile->GetWidth() && mousePoint.x < TILEMAPTOOLSIZE_X
             && mousePoint.y > 0 && mousePoint.y < TILEMAPTOOLSIZE_Y)
         {
-            selectTile.x = (mousePoint.x - (TILEMAPTOOLSIZE_X - sampleTile->GetWidth())) / TILESIZE;
-            selectTile.y = mousePoint.y / TILESIZE;
+            if (!isDrag)
+            {
+                isDrag = true;
+                selectStartTile.x = (mousePoint.x - (TILEMAPTOOLSIZE_X - sampleTile->GetWidth())) / TILESIZE;
+                selectStartTile.y = mousePoint.y / TILESIZE;
+            }
+            else
+            {
+                selectEndTile.x = (mousePoint.x - (TILEMAPTOOLSIZE_X - sampleTile->GetWidth())) / TILESIZE;
+                selectEndTile.y = mousePoint.y / TILESIZE;
+                if (selectEndTile.x < 0) selectEndTile.x = 0;
+                else if (selectEndTile.x >= SAMPLE_TILE_X) selectEndTile.x = SAMPLE_TILE_X - 1;
+                if (selectEndTile.y < 0) selectEndTile.y = 0;
+                else if (selectEndTile.y >= SAMPLE_TILE_Y) selectEndTile.y = SAMPLE_TILE_Y - 1;
+            }
         }
 
-        for (int i = 0; i < TILE_X * TILE_Y; i++)
+        if (!isDrag)
         {
-            if (PtInRect(&tileInfo[i].rcTile, mousePoint))
+            for (int i = 0; i < TILE_X * TILE_Y; i++)
             {
-                tileInfo[i].frameX = selectTile.x;
-                tileInfo[i].frameY = selectTile.y;
-                break;
+                if (PtInRect(&tileInfo[i].rcTile, mousePoint))
+                {
+                    POINT currTile = {0, 0};
+                    POINT deltaTile = { selectEndTile.x - selectStartTile.x, selectEndTile.y - selectStartTile.y };
+                    deltaTile = { (deltaTile.x != 0)?deltaTile.x / abs(deltaTile.x):0, (deltaTile.y != 0)?deltaTile.y / abs(deltaTile.y):0 };
+                    int index = i + currTile.y * SAMPLE_TILE_X + currTile.x;
+                    while (abs(currTile.y) <= abs(selectEndTile.y - selectStartTile.y))
+                    {
+                        if (i / TILE_X + currTile.y < TILE_Y && i % TILE_X + currTile.x < TILE_X
+                            && i / TILE_X + currTile.y >= 0 && i % TILE_X + currTile.x >= 0)
+                        {
+                            tileInfo[index].frameX = selectStartTile.x + currTile.x;
+                            tileInfo[index].frameY = selectStartTile.y + currTile.y;
+
+                            currTile.x += deltaTile.x;
+                            if (currTile.x == selectEndTile.x - selectStartTile.x + deltaTile.x)
+                            {
+                                currTile.x = 0;
+                                currTile.y += deltaTile.y;
+                                if (deltaTile.y == 0) break;
+                            }
+                        }
+                        else
+                        {
+                            currTile.x = 0;
+                            currTile.y += deltaTile.y;
+                        }
+
+                        index = i + currTile.y * SAMPLE_TILE_X + currTile.x;
+                    }
+                    break;
+                }
             }
         }
     }
@@ -59,12 +109,28 @@ void TilemapTool::Update()
 
 void TilemapTool::Render(HDC hdc)
 {
-    PatBlt(hdc, 0, 0,
-        TILEMAPTOOLSIZE_X, TILEMAPTOOLSIZE_Y, WHITENESS);
+    PatBlt(hdc, 0, 0, TILEMAPTOOLSIZE_X, TILEMAPTOOLSIZE_Y, WHITENESS);
 
     sampleTile->Render(hdc, TILEMAPTOOLSIZE_X - sampleTile->GetWidth(), 0);
 
-    sampleTile->FrameRender(hdc, TILEMAPTOOLSIZE_X - sampleTile->GetWidth(), TILEMAPTOOLSIZE_Y / 2, selectTile.x, selectTile.y);
+    POINT currTile = { 0, 0 };
+    POINT deltaTile = { selectEndTile.x - selectStartTile.x, selectEndTile.y - selectStartTile.y };
+    POINT destPoint = { TILEMAPTOOLSIZE_X - sampleTile->GetWidth(), TILEMAPTOOLSIZE_Y / 2 };
+    if (deltaTile.x < 0) destPoint.x += abs(deltaTile.x) * TILESIZE;
+    if (deltaTile.y < 0) destPoint.y += abs(deltaTile.y) * TILESIZE;
+    deltaTile = { (deltaTile.x != 0) ? deltaTile.x / abs(deltaTile.x) : 0, (deltaTile.y != 0) ? deltaTile.y / abs(deltaTile.y) : 0 };
+    while (abs(currTile.y) <= abs(selectEndTile.y - selectStartTile.y))
+    {
+        sampleTile->FrameRender(hdc, destPoint.x + TILESIZE * currTile.x, destPoint.y + TILESIZE * currTile.y, selectStartTile.x + currTile.x, selectStartTile.y + currTile.y);
+
+        currTile.x += deltaTile.x;
+        if (currTile.x == selectEndTile.x - selectStartTile.x + deltaTile.x)
+        {
+            currTile.x = 0;
+            currTile.y += deltaTile.y;
+            if (deltaTile.y == 0) break;
+        }
+    }
 
     for (int i = 0; i < TILE_X * TILE_Y; i++)
     {
