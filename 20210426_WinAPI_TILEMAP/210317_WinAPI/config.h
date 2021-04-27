@@ -9,6 +9,7 @@
 #include <ctime>
 #include <bitset>
 #include <map>
+#include <vector>
 
 using namespace std;
 
@@ -22,10 +23,28 @@ using namespace std;
 #define TILEMAPTOOLSIZE_X	1620
 #define TILEMAPTOOLSIZE_Y	900
 
+#define TILE_BLOCK_WALL 0x01
+#define TILE_BLOCK_EMPTY 0x02
+
 #define PI			3.141592f
 #define DegToRad(x)	((x) * PI / 180.0f)
 #define SAFE_DELETE(p) { if (p) { delete p; p = nullptr; } }
 #define SAFE_RELEASE(p) { if (p) { p->Release(); delete p; p = nullptr; } }
+
+
+struct TileInfo
+{
+	int data = TILE_BLOCK_WALL;
+	RECT rc;
+};
+
+struct Tile
+{
+	POINT pos;
+	int split;
+	vector<TileInfo> vRc;
+	RECT rc;
+};
 
 typedef struct tagFPoint
 {

@@ -215,6 +215,42 @@ void Image::AlphaRender(HDC hdc, int destX, int destY, bool isCenterRenderring)
         imageInfo->hBlendDC, 0, 0, imageInfo->width, imageInfo->height, blendFunc);
 }
 
+void Image::ScaleRender(HDC hdc, int destX, int destY, int currFrameX, int currFrameY, float scale)
+{
+    imageInfo->currFrameX = currFrameX;
+    imageInfo->currFrameY = currFrameY;
+
+    if (isTransparent)
+    {
+        // 특정 색상을 빼고 복사하는 함수
+        GdiTransparentBlt(
+            hdc,                // 목적지 DC
+            destX, destY,               // 복사 위치
+            imageInfo->frameWidth * scale, imageInfo->frameHeight * scale,  // 복사 크기
+
+            imageInfo->hMemDC,  // 원본 DC
+            imageInfo->frameWidth * imageInfo->currFrameX,  // 복사 X 위치
+            imageInfo->frameHeight * imageInfo->currFrameY, // 복사 Y 위치
+            imageInfo->frameWidth, imageInfo->frameHeight,  // 복사 크기
+            transColor  // 제외할 색상
+        );
+    }
+    else
+    {
+        StretchBlt(
+            hdc,
+            destX, destY,
+            imageInfo->frameWidth * scale,
+            imageInfo->frameHeight * scale,
+            imageInfo->hMemDC,
+            imageInfo->frameWidth * imageInfo->currFrameX,
+            imageInfo->frameHeight * imageInfo->currFrameY,
+            imageInfo->frameWidth, imageInfo->frameHeight,
+            SRCCOPY
+        );
+    }
+}
+
 void Image::Release()
 {
     if (imageInfo)

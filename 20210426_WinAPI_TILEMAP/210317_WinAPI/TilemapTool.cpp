@@ -116,12 +116,13 @@ void TilemapTool::Render(HDC hdc)
     POINT currTile = { 0, 0 };
     POINT deltaTile = { selectEndTile.x - selectStartTile.x, selectEndTile.y - selectStartTile.y };
     POINT destPoint = { TILEMAPTOOLSIZE_X - sampleTile->GetWidth(), TILEMAPTOOLSIZE_Y / 2 };
-    if (deltaTile.x < 0) destPoint.x += abs(deltaTile.x) * TILESIZE;
-    if (deltaTile.y < 0) destPoint.y += abs(deltaTile.y) * TILESIZE;
+    float scale = (deltaTile.x != 0 || deltaTile.y != 0) ? 1 : 3;
+    if (deltaTile.x < 0) destPoint.x += abs(deltaTile.x) * TILESIZE * scale;
+    if (deltaTile.y < 0) destPoint.y += abs(deltaTile.y) * TILESIZE * scale;
     deltaTile = { (deltaTile.x != 0) ? deltaTile.x / abs(deltaTile.x) : 0, (deltaTile.y != 0) ? deltaTile.y / abs(deltaTile.y) : 0 };
     while (abs(currTile.y) <= abs(selectEndTile.y - selectStartTile.y))
     {
-        sampleTile->FrameRender(hdc, destPoint.x + TILESIZE * currTile.x, destPoint.y + TILESIZE * currTile.y, selectStartTile.x + currTile.x, selectStartTile.y + currTile.y);
+        sampleTile->ScaleRender(hdc, destPoint.x + TILESIZE * scale * currTile.x, destPoint.y + TILESIZE * scale * currTile.y, selectStartTile.x + currTile.x, selectStartTile.y + currTile.y, scale);
 
         currTile.x += deltaTile.x;
         if (currTile.x == selectEndTile.x - selectStartTile.x + deltaTile.x)

@@ -85,6 +85,7 @@ public:
 		int currFrameX, int currFrameY, bool isCenterRenderring = false);
 	void AlphaRender(HDC hdc, int destX, int destY,
 		bool isCenterRenderring = false);
+	void ScaleRender(HDC hdc, int destX, int destY, int currFrameX, int currFrameY, float scale = 1);
 
 
 	void Release();
