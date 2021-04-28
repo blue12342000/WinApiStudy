@@ -88,6 +88,9 @@ LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 	case WM_MOUSEMOVE:
 		KeyManager::GetSingleton()->SetMousePoint(LOWORD(lParam), HIWORD(lParam));
 		break;
+	case WM_KEYDOWN:
+		KeyManager::GetSingleton()->SetInputKey(wParam);
+		break;
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;

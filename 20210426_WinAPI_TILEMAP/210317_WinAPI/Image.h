@@ -68,7 +68,7 @@ private:
 
 public:
 	// 빈 비트맵 이미지를 만드는 함수
-	HRESULT Init(int width, int height);
+	HRESULT Init(int width, int height, bool isTransparent = FALSE, COLORREF transColor = FALSE);
 
 	// 파일로부터 이미지를 로드하는 함수
 	HRESULT Init(const char* fileName, int width, int height, bool isTransparent = FALSE, COLORREF transColor = FALSE);
@@ -102,5 +102,7 @@ public:
 
 	int GetWidth() { return this->imageInfo->width; }
 	int GetHeight() { return this->imageInfo->height; }
+	int GetFrameWidth() { return this->imageInfo->frameWidth; }
+	int GetFrameHeight() { return this->imageInfo->frameHeight; }
 };
 

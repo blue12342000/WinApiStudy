@@ -1,7 +1,9 @@
 // config.h
 
 #pragma once
+// 타이머
 #pragma comment(lib, "Winmm.lib")
+// 알파블랜드
 #pragma comment(lib, "msimg32.lib")
 
 #include <Windows.h>
@@ -20,8 +22,8 @@ using namespace std;
 
 #define WINSIZE_X	1080
 #define WINSIZE_Y	720
-#define TILEMAPTOOLSIZE_X	1620
-#define TILEMAPTOOLSIZE_Y	900
+#define TILEMAPTOOLSIZE_X	1280
+#define TILEMAPTOOLSIZE_Y	800
 
 #define TILE_BLOCK_WALL 0x01
 #define TILE_BLOCK_EMPTY 0x02

@@ -8,6 +8,7 @@ using namespace std;
 class KeyManager : public Singleton<KeyManager>
 {
 private:
+	int input;
 	POINT mousePoint;
 	bitset<MAX_KEY_COUNT>	keyUp;		// 현재 키가 위로 올라와 있는지
 	bitset<MAX_KEY_COUNT>	keyDown;	// 현재 키가 눌려 있는지
@@ -25,5 +26,7 @@ public:
 
 	inline void SetMousePoint(int x, int y) { mousePoint.x = x; mousePoint.y = y; }
 	inline POINT GetMousePoint() { return mousePoint; }
+	inline void SetInputKey(int input) { this->input = input; }
+	inline wchar_t GetInputKey() { return input; }
 };
 

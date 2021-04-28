@@ -1,6 +1,6 @@
 #include "Image.h"
 
-HRESULT Image::Init(int width, int height)
+HRESULT Image::Init(int width, int height, bool isTransparent/* = FALSE*/, COLORREF transColor/* = FALSE*/)
 {
     HDC hdc = GetDC(g_hWnd);
 
@@ -22,8 +22,8 @@ HRESULT Image::Init(int width, int height)
         return E_FAIL;
     }
 
-    this->isTransparent = FALSE;
-    this->transColor = FALSE;
+    this->isTransparent = isTransparent;
+    this->transColor = transColor;
 
     return S_OK;
 }

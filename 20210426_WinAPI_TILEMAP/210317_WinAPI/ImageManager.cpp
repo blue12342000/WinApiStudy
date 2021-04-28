@@ -24,6 +24,31 @@ void ImageManager::Release()
     ReleaseSingleton();
 }
 
+Image* ImageManager::AddImage(string key, int width, int height, bool isTransparent, COLORREF transColor)
+{
+    Image* image = nullptr;
+
+    // 맵에 키에 해당하는 데이터가 있으면 추가생성없이 리턴
+    image = FindImage(key);
+    if (image)
+    {
+        return image;
+    }
+
+    // 없으면 생성 후 맵에 추가
+    image = new Image();
+    if (FAILED(image->Init(width, height, isTransparent, transColor)))
+    {
+        image->Release();
+        delete image;
+
+        return nullptr;
+    }
+
+    mImageDatas.insert(make_pair(key, image));
+    return image;
+}
+
 Image* ImageManager::AddImage(string key, const char* fileName, int width, int height, bool isTransparent, COLORREF transColor)
 {
     Image* image = nullptr;

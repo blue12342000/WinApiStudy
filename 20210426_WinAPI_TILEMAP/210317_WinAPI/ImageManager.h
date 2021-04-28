@@ -12,6 +12,10 @@ public:
 	HRESULT Init();
 	void Release();
 
+	Image* AddImage(string key,
+		int width, int height, bool isTransparent = FALSE,
+		COLORREF transColor = FALSE);
+
 	Image* AddImage(string key, const char* fileName, 
 		int width, int height, bool isTransparent = FALSE, 
 		COLORREF transColor = FALSE);
